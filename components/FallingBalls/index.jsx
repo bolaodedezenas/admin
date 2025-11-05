@@ -17,7 +17,7 @@ const COLORS = [
 
 const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-export default function FallingBalls({ count = 20 }) {
+export default function FallingBalls({ count = 8 }) {
   const [balls, setBalls] = useState([]);
 
   useEffect(() => {
