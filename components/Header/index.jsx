@@ -19,7 +19,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 z-50 w-full   flex justify-between items-center p-6 bg-black-600 shadow-md text-white">
+    <header className="fixed top-0 z-50 w-full border-0  flex justify-between items-center p-6 text-white">
       <div className="flex items-center gap-3">
         <Image
             src={photoURL}
