@@ -23,7 +23,7 @@ export default function Home() {
   if (loading || !user) return <Loading />;
 
   return (
-    <main className="min-h-screen flex gap-2 flex-col items-center justify-center bg-black p-4">
+    <main className="min-h-screen flex gap-3 flex-col items-center justify-center bg-black p-4">
       <Header />
       <FallingBalls count={20} /> {/* Número de bolas */}
       <h1 className="text-7xl text-white  font-bold justify-center position:relative z-10 "> Bolão de Dezenas</h1>
