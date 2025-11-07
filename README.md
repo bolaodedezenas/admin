@@ -44,15 +44,14 @@
 - [Funcionalidades](#funcionalidades)
 - [Páginas do Sistema](#páginas-do-sistema)
   - [Painel](#painel)
-  - [Login--Cadastro](#login--cadastro)
+  - [Login / Cadastro](#login--cadastro)
 - [Estrutura de Pastas](#estrutura-de-pastas)
 - [Variáveis de Ambiente](#variáveis-de-ambiente)
-
 
 ---
 
 ## 🧩 Sobre o Projeto
-> O **Bolão de Dezenas** é um sistema que facilita a criação de bolões, controle de apostas, resultados automáticos e painel administrativo completo.
+O **Bolão de Dezenas** é um sistema que facilita a criação de bolões, controle de apostas, resultados automáticos e painel administrativo completo.
 
 ---
 
@@ -60,19 +59,18 @@
 
 | Tecnologia | Uso |
 |-----------|-----|
-| **Next.js 14+** | Estrutura principal do projeto |
-| **React** | Construção dos componentes |
+| **Next.js 14+** | Estrutura do projeto |
+| **React** | Componentização |
 | **TailwindCSS** | Estilização |
-| **Firebase/Auth** | Login e autenticação |
-| **Firebase/DB** | Armazenamento (se aplicável) |
-| **Vercel** | Deploy sugerido |
-| **ESLint / Prettier** | Padronização de código |
-| **React-icons** | Padronização de Icons |
+| **Firebase Authentication** | Autenticação |
+| **Firebase Database / Firestore** | Armazenamento |
+| **React Icons** | Ícones da interface |
+| **Vercel** | Deploy |
+| **ESLint / Prettier** | Padronização |
 
 ---
 
-
-## 📦 Estrutura de Pastas (Exemplo)
+## 📦 Estrutura de Pastas
 ```bash
 /project
  ├── app
@@ -108,47 +106,70 @@
  └── README.md
 
 
+ ## 🔧 Variáveis de Ambiente
 
+Para o funcionamento correto da autenticação e integração com o Firebase, crie um arquivo:
 
-## 🖥 Layout da Aplicação
+E adicione as seguintes variáveis:
 
-## ✅ Funcionalidades
+```env
+# ============================
+# 🔥 Firebase Configuration
+# ============================
+
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=
+NEXT_PUBLIC_FIREBASE_GOOGLE_CLIENT_ID=
+
+---
+
+# 🖥️ Layout da Aplicação
+Adicione aqui **screenshots**, GIFs da aplicação ou o **link para o Figma**.
+
+---
+
+# ✅ Funcionalidades
 - ✅ Controle de dezenas  
 - ✅ Criação de bolões  
 - ✅ Painel administrativo  
 - ✅ Login com Google / Email  
 - ✅ Sistema de ranking  
 - ✅ Gerenciamento de apostas  
-- ✅ Atualização de resultados  
+- ✅ Atualização automática dos resultados  
 - ✅ Interface responsiva  
 - ✅ Perfis individuais  
 
 ---
 
-# 📚 **Páginas do Sistema**
-
-Abaixo são as seções onde você irá adicionar a explicação de cada página.  
-✅ Cada página já contém **link âncora**, título, descrição e espaço para especificações.
-
----
+# 📚 Páginas do Sistema
 
 ## 🔐 Login / Cadastro
 
-### **Descrição**
-Área destinada para que o usuário acesse sua conta e utilize todas as funcionalidades do sistema.
-
-### **Funcionalidades**
-- Login com e-mail e senha  
-- Cadastro de novos usuários  
-- Login com Google  
-- Recuperação de senha  
-- Redirecionamento para o painel após autenticação  
-
-### **Tecnologias**
-- Next.js  
-- React  
-- TailwindCSS  
-- Firebase Authentication
+### 📄 Descrição
+Seção onde o usuário acessa sua conta ou cria uma nova para utilizar todas as funcionalidades da plataforma.
 
 ---
 
+### ✅ Funcionalidades da Página
+- Login com **email e senha**  
+- Login via **Google Provider**  
+- Cadastro de novos usuários  
+- Recuperação de senha  
+- Verificação automática de sessão ativa  
+- Redirecionamento para o painel após autenticação  
+
+---
+
+### 🛠 Tecnologias Envolvidas
+- **Next.js (App Router)**  
+- **React**  
+- **TailwindCSS**  
+- **Firebase Authentication**  
+- **Custom Hooks** para controle de estado e contexto  
+
+---
