@@ -9,7 +9,7 @@ export default function SignInButton({ onClick, text }) {
         text-[1rem] 
         text-white
         font-extrabold 
-        px-4 py-1.5 
+        px-4 py-3 
         w-full 
         bg-[rgb(var(--btn))] hover:bg-[rgb(var(--btn-hover))]
         rounded-[5px]  

@@ -9,7 +9,7 @@ export default function GoogleButton({ onClick }) {
           w-full 
           border-0
           text-[#3d3d3d] 
-          py-2 
+          py-3 
           rounded-[5px]
           flex 
           items-center 

@@ -40,7 +40,7 @@ export default function SignInForm({ onGoogleLogin, onEmailLogin,  visible }) {
             }
             <h1 className="text-[rgb(var(--text-title))] text-[1.2rem] font-bold">Acesso ao Painel</h1>
             <p className="pl-3 pr-3 text-[1rem] text-center text-[rgb(var(--text-paragraph))] font-normal">Entre na sua conta com seus dados abaixo:</p>
-            <div className="w-full sm:min-w-[340px] pl-5  pr-5 mt-8 ">
+            <div className="min-w-[98%] sm:min-w-[85%] pl-5  pr-5 mt-8 ">
                 
                 <div 
                     onClick={() => emailRef.current?.focus()}
@@ -79,11 +79,11 @@ export default function SignInForm({ onGoogleLogin, onEmailLogin,  visible }) {
 
             </div>
             <p className="text-[rgb(var(--text))] text-[0.9rem] w-full text-center cursor-pointer hover:underline mb-3.5 mt-3 italic font-medium">Esqueceu a senha?</p>
-            <div className="w-full sm:min-w-[340px] pl-5  pr-5  ">
+            <div className="min-w-[98%] sm:min-w-[85%] pl-5  pr-5  ">
                 <SignInButton  text="Entrar"/>
             </div>
             <p className="text-[rgb(var(--text))] text-[0.9rem] font-medium text-center mt-1.5 mb-1.5">OU CONTINUAR COM</p>
-            <div className="w-full sm:min-w-[340px] pl-5  pr-5  ">
+            <div className="min-w-[98%] sm:min-w-[85%] pl-5  pr-5  ">
                 <GoogleButton onClick={() => {onGoogleLogin()}} />
             </div>
             <p className="w-[190px] sm:w-full text-[rgb(var(--text))] text-[0.9rem] text-center mt-4">Não tem uma conta? <span className="text-[rgb(var(--text-links))] cursor-pointer hover:underline">Cadastre-se agora</span></p>
