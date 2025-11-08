@@ -58,7 +58,7 @@ export default function LoginPage() {
       "
     >
       <SignInForm visible={visible} onGoogleLogin={onGoogleLogin} onEmailLogin={onEmailLogin} />
-      <p className="font-light text-[0.9rem] text-[rgb(var(--white))] mt-8">Tecnologia desenvolvida por Rixxer</p>
+      <p className={`${visible ? "hidden" : "flex"} font-light text-[0.9rem] text-[rgb(var(--white))] mt-8`}>Tecnologia desenvolvida por Rixxer</p>
     </div>
   );
 }

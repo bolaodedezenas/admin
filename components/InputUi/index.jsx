@@ -1,13 +1,14 @@
 "use client";
 import { forwardRef } from "react";
 
-const InputUi = forwardRef(function InputUi({ type, placeholder, autocomplete, ...props }, ref) {
+const InputUi = forwardRef(function InputUi({ type, placeholder, autocomplete, width, height, ...props }, ref) {
   return (
     <input
       ref={ref}
       type={type}
       placeholder={placeholder}
       {...props}
+      style={{ width, height }}
       className="
         block 
         text-[0.9rem] 

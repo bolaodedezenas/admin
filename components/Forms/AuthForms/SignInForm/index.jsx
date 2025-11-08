@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 // components
 import FormLayout from "@/components/Forms/FormLayout";
 import Label from "@/components/Label";
@@ -14,6 +15,7 @@ import GoogleButton from "@/components/Btns/GoogleButton";
 import Icon from "@/components/Icon";
 
 export default function SignInForm({ onGoogleLogin, onEmailLogin,  visible }) {
+    const router = useRouter();
     const perfil = JSON.parse(localStorage.getItem("Photo")) || null;
     console.log(perfil);
     const emailRef = useRef(null);
@@ -86,7 +88,13 @@ export default function SignInForm({ onGoogleLogin, onEmailLogin,  visible }) {
             <div className="w-full xxs:w-[85%] xs:w-[80%] sm:w-[80%] pl-5  pr-5  ">
                 <GoogleButton onClick={() => {onGoogleLogin()}} />
             </div>
-            <p className="w-[190px] xxs:w-full text-[rgb(var(--text))] text-[0.9rem] text-center mt-4">Não tem uma conta? <span className="text-[rgb(var(--text-links))] cursor-pointer hover:underline">Cadastre-se agora</span></p>
+            <p className="w-[190px] xxs:w-full text-[rgb(var(--text))] text-[0.9rem] text-center mt-4">Não tem uma conta? 
+                <span 
+                    className="text-[rgb(var(--text-links))] cursor-pointer hover:underline"
+                    onClick={() => router.replace('/register')}
+                >
+                    Cadastre-se agora
+                </span></p>
         </form>
     </FormLayout>
   );
