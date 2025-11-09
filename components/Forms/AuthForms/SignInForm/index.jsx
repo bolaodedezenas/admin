@@ -80,7 +80,7 @@ export default function SignInForm({ onGoogleLogin, onEmailLogin,  visible }) {
                 </div>
 
             </div>
-            <p className="text-[rgb(var(--text))] text-[0.9rem] w-full text-center cursor-pointer hover:underline mb-3.5 mt-3 italic font-medium">Esqueceu a senha?</p>
+            <p onClick={() => router.push("/recovery")} className="text-[rgb(var(--text))] text-[0.9rem] w-full text-center cursor-pointer hover:underline mb-3.5 mt-3 italic font-medium">Esqueceu a senha?</p>
             <div className="w-full xxs:w-[85%] xs:w-[80%] sm:w-[80%] pl-5  pr-5  ">
                 <SignInButton  text="Entrar"/>
             </div>
