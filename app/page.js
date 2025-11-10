@@ -11,17 +11,16 @@ import Header from "@/components/Header";
 export default function Painel() {
   const router = useRouter();
   useProtectedRoute();
-
   const { user, loading} = useAuth();
- 
 
    useEffect(() => {
-      if (!user) {
-        router.replace("/login"); // usuário já logado vai para raiz
-      }
-    }, [user,  loading,  router]);
+     if (!user) {
+       router.replace('/login'); // usuário já logado vai para raiz
+     }
+    //  if(!user.status) router.replace('/welcome');
+   }, [user,  loading,  router]);
 
-    if (loading) return  <Loading />;
+  if (loading) return  <Loading />;
 
 
   return (

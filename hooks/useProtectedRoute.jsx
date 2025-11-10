@@ -9,7 +9,7 @@ export const useProtectedRoute = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!user) {
       router.replace("/login"); // se não estiver logado, redireciona para login
     }
   }, [user, loading, router]);

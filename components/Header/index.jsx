@@ -8,27 +8,23 @@ import Icon from "@/components/Icon";
 
 export default function Header() {
   const perfil = JSON.parse(localStorage.getItem("Photo")) || null;
-
   const { user, handleLogout } = useAuth();
-  console.log(user);
   const router = useRouter();
 
-
-  if (!user) return null; // não mostra header se não estiver logado
-
-  const firstName = user.name?.split(" ")[0] || user.displayName?.split(" ")[0] || "usuário";
-
-  const photoURL = user.photoURL || "/default-avatar.png"; // coloque um avatar padrão se não tiver
-
+  const userName = user.name?.split(" ")[0] || user.displayName?.split(" ")[0] || "usuário";
+  const photoURL = user.photoURL
   const logoutUser = async () => {
-    await handleLogout();
-    router.push("/login"); // redireciona após logout
+    try {
+      await handleLogout();
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <header className="fixed top-0 z-50 w-full border-0  flex justify-between items-center p-6 text-white">
       <div className="flex items-center gap-3">
-
         {perfil === null ?
           <Icon 
               className="rounded-full "
@@ -44,13 +40,11 @@ export default function Header() {
               className="rounded-full object-cover"
           />
        }
-      
         <div>
-          <p className="font-bold text-lg">Olá, {firstName || lastName}!</p>
+          <p className="font-bold text-lg">Olá, {userName}!</p>
           <p className="text-sm opacity-90">Bem-vindo de volta</p>
         </div>
       </div>
-
       <button
         onClick={logoutUser}
         className="bg-white text-black text-lg px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition"

@@ -1,4 +1,4 @@
-
+"use client";
 
 export default function Label({ children, id }) {
     return (

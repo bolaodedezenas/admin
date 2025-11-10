@@ -3,47 +3,22 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+// components
 import Loading from "@/components/Loading";
 import SignInForm from "@/components/Forms/AuthForms/SignInForm";
 
-
 export default function LoginPage() {
   const router = useRouter();
-  const { handleEmailLogin, handleLoginWithGoogle, user, loading, setLoading  } = useAuth(); // pega as funções do contexto
-
-  const [error, setError] = useState("");
-  const [visible, setVisible] = useState(false);
+  const { user, loading } = useAuth(); // pega as funções do contexto
 
    useEffect(() => {
     if (user) {
-      router.replace("/"); // usuário já logado vai para raiz
+      console.log(user.status);
+      if(user?.status === false) return router.replace('/welcome');
+      if(user?.status) router.replace("/");
     }
   }, [user, router]);
-
-
-  // Login com email e senha
-  const onEmailLogin = async (e) => {
-    e.preventDefault();
-    // setError("");
-    // const { user, error } = await handleEmailLogin(email, password);
-    // if (error) return setError("Email ou senha inválidos.");
-    // alert(`Login realizado! Bem-vindo, ${user.displayName || user.email}`);
-    // router.push("/dashboard")
-  };
-
-  // Login com Google
-  const onGoogleLogin = async () => {
-    setLoading(true);
-    setVisible(true);
-    setError("");
-    const { user, error } = await handleLoginWithGoogle();
-    if (error) return setError("Erro ao entrar com Google."); setVisible(false);
-    if (user) {
-      router.push("/"); // redireciona para a página raiz
-    }
-  };
-
-   if (loading) return  <Loading />;
+  if (loading) return  <Loading />;
 
   return (
     <div className="
@@ -54,8 +29,8 @@ export default function LoginPage() {
       sm:p-10
       "
     >
-      <SignInForm visible={visible} onGoogleLogin={onGoogleLogin} onEmailLogin={onEmailLogin} />
-      <p className={`${visible ? "hidden" : "flex"} font-light text-[0.9rem] text-[rgb(var(--white))] mt-8`}>Tecnologia desenvolvida por Rixxer</p>
+      <SignInForm />
+      <p className={`font-light text-[0.9rem] text-[rgb(var(--white))] mt-8`}>Tecnologia desenvolvida por Rixxer</p>
     </div>
   );
 }

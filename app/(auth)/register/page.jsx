@@ -1,36 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+// components
 import Loading from "@/components/Loading";
 import SignUpForm from "@/components/Forms/AuthForms/SignUpForm";
 
-
-
 export default function LoginPage() {
   const router = useRouter();
-  const { user, loading , setLoading, handleLoginWithGoogle } = useAuth(); // pega as funções do contexto
-  const [visible, setVisible] = useState(false);
+  const { user, loading } = useAuth(); // pega as funções do contexto
 
    useEffect(() => {
     if (user) {
       router.replace("/"); // usuário já logado vai para raiz
     }
   }, [user, router]);
-
-   if (loading) return  <Loading />;
-
-   // Login com Google
-  const onGoogleLogin = async () => {
-    const { user, error } = await handleLoginWithGoogle();
-    if (error) return setError("Erro ao entrar com Google."); setVisible(false);
-    if (user) {
-      setLoading(true);
-      router.push("/"); // redireciona para a página raiz
-    }
-  };
-
+  if (loading) return  <Loading />;
 
   return (
     <div className="
@@ -40,7 +26,7 @@ export default function LoginPage() {
       p-4
       "
     >
-      <SignUpForm visible={visible} setVisible={setVisible} onGoogleLogin={onGoogleLogin}  />
+      <SignUpForm  />
     </div>
   );
 }

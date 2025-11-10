@@ -12,52 +12,47 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
 
-useEffect(() => {
-  // 🔥 Listener para mudanças de login e logout
-  const unsubscribeAuth = auth.onAuthStateChanged(async (firebaseUser) => {
-    if (firebaseUser) {
+  useEffect(() => {
+    // 🔥 Listener para mudanças de login e logout
+    const unsubscribeAuth = auth.onAuthStateChanged(async (firebaseUser) => {
+      if (firebaseUser) {
+        const docRef = doc(db, 'users', firebaseUser.uid);
+        const snap = await getDoc(docRef);
+        // Aguardar 1 segundo antes de atualizar o estado
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const docRef = doc(db, "users", firebaseUser.uid);
-      const snap = await getDoc(docRef);
+        if (snap.exists()) {
+          setUser({ uid: firebaseUser.uid, ...snap.data() });
+        } else {
+          setUser(firebaseUser);
+        }
 
-      if (snap.exists()) {
-        setUser({ uid: firebaseUser.uid, ...snap.data() });
+        localStorage.setItem('Photo', JSON.stringify(firebaseUser.photoURL));
       } else {
-        setUser(firebaseUser);
+        setUser(null);
+      }
+    });
+
+    // 🔥 Listener para mudanças no ID Token (renovação automática do Firebase)
+    const unsubscribeToken = auth.onIdTokenChanged(async (user) => {
+      if (user) {
+        const newToken = await user.getIdToken();
+        setUserToken(newToken);
+      } else {
+        setUserToken(null);
       }
 
-      localStorage.setItem("Photo", JSON.stringify(firebaseUser.photoURL));
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    });
 
-    } else {
-      setUser(null);
-    }
-
-  });
-
-  // 🔥 Listener para mudanças no ID Token (renovação automática do Firebase)
-  const unsubscribeToken = auth.onIdTokenChanged(async (user) => {
-    if (user) {
-      const newToken = await user.getIdToken();
-      setUserToken(newToken);
-    } else {
-      setUserToken(null);
-    }
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  });
-
-  // ✅ remover 
-  return () => {
-    unsubscribeAuth();
-    unsubscribeToken();
-  };
-
-}, []);
-
-
-
+    // ✅ remover
+    return () => {
+      unsubscribeAuth();
+      unsubscribeToken();
+    };
+  }, []);
 
   const handleLoginWithGoogle = async () => {
     const { user, error } = await loginWithGoogle();
@@ -65,12 +60,12 @@ useEffect(() => {
     return { user };
   };
 
-
   const handleLogout = async () => {
     setLoading(true);
     await logout();
     setUser(null); // atualiza o state do contexto setUser(null);
   };
+  
 
   return (
     <AuthContext.Provider value={{ user, loading, userToken, setUser, setLoading, handleLoginWithGoogle, handleLogout }}>

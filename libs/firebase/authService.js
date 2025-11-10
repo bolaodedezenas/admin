@@ -4,9 +4,8 @@ import { doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore";
 
 export const loginWithGoogle = async () => {
   try {
-    
     const result = await signInWithPopup(auth, googleProvider);
-    const uid = result.user.uid;
+    const id = result.user.uid;
 
     const data = {
       name: result.user.displayName,
@@ -22,31 +21,25 @@ export const loginWithGoogle = async () => {
       token: result.user.accessToken
     };
 
-    const exists = await userExists(uid);
-
+    const exists = await userExists(id);
     if (!exists) {
-      const saved = await saveUser(uid, data);
+      const saved = await saveUser(id, data);
       return { user: saved.user };
     }
-
-    // usuário já existe → pega completo
-    const snap = await getDoc(doc(db, "users", uid));
-    return { user: { uid, ...snap.data() } };
-
+    // usuário já existe → pega os dados do db
+    const snap = await getDoc(doc(db, "users", id));
+    return { user: {id, ...snap.data() } };
   } catch (error) {
     return { error };
   }
 };
 
 
-
-
 // Verifica se o usuário existe
-export async function userExists(uid) {
+export async function userExists(id) {
   try {
-    const userRef = doc(db, "users", uid);
+    const userRef = doc(db, "users", id);
     const snapshot = await getDoc(userRef);
-
     return snapshot.exists(); 
   } catch (error) {
     console.error("Erro ao verificar usuário:", error);
@@ -54,8 +47,7 @@ export async function userExists(uid) {
   }
 }
 
-
-
+// Login com email e senha
 export const loginWithEmail = async (email, password) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
@@ -65,6 +57,7 @@ export const loginWithEmail = async (email, password) => {
   }
 };
 
+// desloga o usuário
 export const logout = async () => {
   try {
     await signOut(auth);
@@ -73,47 +66,39 @@ export const logout = async () => {
   }
 };
 
-
 export const registerWithEmail = async (email, password, formData) => {
   try {
-    // remove password apenas do objeto salvo no Firestore
+    // remove password 
     const { password: _, ...Data } = formData;
 
     const result = await createUserWithEmailAndPassword(auth, email, password);
     const user = result.user;
-      console.log(user);
-
     if (!user?.uid) {
       return { error: new Error("Não foi possível criar o usuário.") };
     }
-
-  
+    // salva os dados no banco
     await saveUser(user.uid,  Data);
-   
-
     return { user };
   } catch (error) {
     return { error };
   }
 };
 
-
+// salva o usuário no banco
 export async function saveUser(id, data) {
   try {
     const userRef = doc(db, "users", id);
-
     const userData = {
       ...data,
       createdAt: serverTimestamp(),
     };
 
-    await setDoc(userRef, userData);
+    await setDoc(userRef, userData, { merge: true });
 
     return {
       success: true,
-      user: { uid: id, ...userData } // agora retorna também o photoURL
+      user: { uid: id, ...userData }
     };
-
   } catch (error) {
     console.error("Erro ao salvar usuário:", error);
     return { success: false, error };

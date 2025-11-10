@@ -32,7 +32,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
       <head>
-        <link rel="preload" href="/fonts/minha-fonte.woff2" as="font" type="font/woff2" crossorigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
       </head>
       <body
