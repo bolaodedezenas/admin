@@ -229,7 +229,7 @@ export default function SignUpForm({onGoogleLogin}) {
 
     // ✅ Registrar
     const onRegister = async (e) => {
-         setLoading(true);
+         
         e.preventDefault();
         // ✅ Monta o objeto apenas com os campos que queremos salvar
         const formData = {
@@ -273,7 +273,7 @@ export default function SignUpForm({onGoogleLogin}) {
             console.log(error.message);
             return;
         }
-
+        setLoading(true);
         toast.success("Conta criada com sucesso!");
        
     };
