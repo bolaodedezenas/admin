@@ -13,11 +13,10 @@ export default function LoginPage() {
 
    useEffect(() => {
     if (user) {
-      console.log(user.status);
       if(user?.status === false) return router.replace('/welcome');
       if(user?.status) router.replace("/");
     }
-  }, [user, router]);
+  }, [user, loading, router]);
   if (loading) return  <Loading />;
 
   return (

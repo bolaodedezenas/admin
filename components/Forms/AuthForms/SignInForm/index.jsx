@@ -52,6 +52,7 @@ export default function SignInForm() {
   const onGoogleLogin = async () => {
     setLoading(true);
     const { user, error } = await handleLoginWithGoogle();
+    setUser(user);
     if (error) return setError('Erro ao entrar com Google.');
   };
 

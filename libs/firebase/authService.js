@@ -3,6 +3,7 @@ import { signInWithPopup, signOut, createUserWithEmailAndPassword,  signInWithEm
 import { doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore";
 
 export const loginWithGoogle = async () => {
+
   try {
     const result = await signInWithPopup(auth, googleProvider);
     const id = result.user.uid;
@@ -18,7 +19,6 @@ export const loginWithGoogle = async () => {
       terms: true,
       permissions: [],
       status: false,
-      token: result.user.accessToken
     };
 
     const exists = await userExists(id);

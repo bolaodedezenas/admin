@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
         const docRef = doc(db, 'users', firebaseUser.uid);
         const snap = await getDoc(docRef);
         // Aguardar 1 segundo antes de atualizar o estado
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
 
         if (snap.exists()) {
           setUser({ uid: firebaseUser.uid, ...snap.data() });
