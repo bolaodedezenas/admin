@@ -1,5 +1,5 @@
 "user client";
-
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 // components
@@ -11,14 +11,50 @@ import Title from "@/components/Title";
 import InputLayout from "@/components/InputLayout";
 //icons
 import Icon from "@/components/Icon";
+import {sendPasswordReset} from "@/libs/firebase/authService";
+// toast
+import toast from "react-hot-toast";
 
-export default function SignInForm({ onGoogleLogin, onEmailLogin,  visible }) {
+export default function SignInForm() {
     const router = useRouter();
     const perfil = JSON.parse(localStorage.getItem("Photo")) || null;
+    const [email, setEmail] = useState("");
+    const [time , setTime] = useState(0);
 
+    async function hendleSubmit(e) {
+        e.preventDefault();
+        if (!email) return toast.error('Por favor, preencha todos os campos!');
+        if(time > 0) return toast.error('Por favor, aguarde o tempo para enviar outro e-mail.');
+        
+
+        const res = await sendPasswordReset(email);
+        console.log(res);
+        if (res.ok === false) return toast.error(res.error);
+        if (res.ok === true) {
+            setTime(60);
+            startCountdown();
+            toast.success('Email enviado com sucesso!');
+        }
+    }
+
+    // Contagem regressiva
+    function startCountdown() {
+      const interval = setInterval(() => {
+        setTime((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    }
+
+
+    
   return (
-    <FormLayout visible={visible}>
-        <form onSubmit={(e) => onEmailLogin(e)} className="w-full flex flex-col items-center pt-2 pb-5">
+    <FormLayout >
+        <form onSubmit={(e) => hendleSubmit(e)} className="w-full flex flex-col items-center pt-2 pb-5">
             {perfil === null ?
                 <Icon 
                     className="rounded-full "
@@ -44,7 +80,9 @@ export default function SignInForm({ onGoogleLogin, onEmailLogin,  visible }) {
                         type="email" 
                         placeholder="Email@example.com" 
                         autocomplete="email" 
-                        required
+                        name="email" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                 </InputLayout>
             </div>
@@ -57,6 +95,7 @@ export default function SignInForm({ onGoogleLogin, onEmailLogin,  visible }) {
                 </span>
             </p>
             <div className="w-full xxs:w-[85%] xs:w-[80%] sm:w-[80%] pl-5  pr-5  ">
+                <span className={` display: ${time > 0 ? 'block' : 'hidden'} font-semibold text-[rgb(var(--text))] text-[1.4rem] pb-1 text-center texte-[rgb(var(--text))]`}>{time}</span>
                 <SignInButton   text="Enviar"/>
             </div>
              <p className="w-[190px] xxs:w-full text-[rgb(var(--text))] text-[0.9rem] text-center mt-4">Não tem uma conta? 

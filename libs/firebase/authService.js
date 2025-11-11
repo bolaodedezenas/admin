@@ -1,9 +1,14 @@
-import { auth, googleProvider, db } from "./FirebaseConfig";
-import { signInWithPopup, signOut, createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore";
+import { auth, googleProvider, db } from './FirebaseConfig';
+import {
+  signInWithPopup,
+  signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from 'firebase/auth';
+import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 
 export const loginWithGoogle = async () => {
-
   try {
     const result = await signInWithPopup(auth, googleProvider);
     const id = result.user.uid;
@@ -12,10 +17,10 @@ export const loginWithGoogle = async () => {
       name: result.user.displayName,
       email: result.user.email,
       photoURL: result.user.photoURL,
-      phone: "",
-      cep: "",
-      state: "",
-      city: "",
+      phone: '',
+      cep: '',
+      state: '',
+      city: '',
       terms: true,
       permissions: [],
       status: false,
@@ -27,22 +32,21 @@ export const loginWithGoogle = async () => {
       return { user: saved.user };
     }
     // usuário já existe → pega os dados do db
-    const snap = await getDoc(doc(db, "users", id));
-    return { user: {id, ...snap.data() } };
+    const snap = await getDoc(doc(db, 'users', id));
+    return { user: { id, ...snap.data() } };
   } catch (error) {
     return { error };
   }
 };
 
-
 // Verifica se o usuário existe
 export async function userExists(id) {
   try {
-    const userRef = doc(db, "users", id);
+    const userRef = doc(db, 'users', id);
     const snapshot = await getDoc(userRef);
-    return snapshot.exists(); 
+    return snapshot.exists();
   } catch (error) {
-    console.error("Erro ao verificar usuário:", error);
+    console.error('Erro ao verificar usuário:', error);
     return false;
   }
 }
@@ -68,16 +72,16 @@ export const logout = async () => {
 
 export const registerWithEmail = async (email, password, formData) => {
   try {
-    // remove password 
+    // remove password
     const { password: _, ...Data } = formData;
 
     const result = await createUserWithEmailAndPassword(auth, email, password);
     const user = result.user;
     if (!user?.uid) {
-      return { error: new Error("Não foi possível criar o usuário.") };
+      return { error: new Error('Não foi possível criar o usuário.') };
     }
     // salva os dados no banco
-    const saved =  await saveUser(user.uid,  Data);
+    const saved = await saveUser(user.uid, Data);
     return { user: saved.user };
   } catch (error) {
     return { error };
@@ -87,7 +91,7 @@ export const registerWithEmail = async (email, password, formData) => {
 // salva o usuário no banco
 export async function saveUser(id, data) {
   try {
-    const userRef = doc(db, "users", id);
+    const userRef = doc(db, 'users', id);
     const userData = {
       ...data,
       createdAt: serverTimestamp(),
@@ -97,10 +101,39 @@ export async function saveUser(id, data) {
 
     return {
       success: true,
-      user: { id, ...userData }
+      user: { id, ...userData },
     };
   } catch (error) {
-    console.error("Erro ao salvar usuário:", error);
+    console.error('Erro ao salvar usuário:', error);
     return { success: false, error };
   }
 }
+
+// Envia e-mail de redefinição de senha
+export async function sendPasswordReset(email) {
+  try {
+    // Defina actionCodeSettings com a URL da sua página
+    const actionCodeSettings = {
+      url:'http://localhost:3000/resetPassword', // sua página de reset
+      handleCodeInApp: true, // importante para usar sua própria UI
+    };
+
+    await sendPasswordResetEmail(auth, email, actionCodeSettings);
+
+    return { ok: true, message: 'E-mail enviado com sucesso!' };
+  } catch (error) {
+    return { ok: false, error: error.message };
+  }
+}
+
+export  async function  handleResetPassword(oobCode, password, toast) {
+  try {
+    // Aqui fazemos o reset da senha usando o oobCode
+    await confirmPasswordReset(auth, oobCode, password);
+    toast.success('Senha redefinida com sucesso!');
+    return true;
+  } catch (err) {
+    toast.error('Erro ao redefinir a senha: ' + err.message);
+    return false;
+  }
+};

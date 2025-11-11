@@ -30,7 +30,9 @@ export default function InputUi({
         font-normal 
         italic
         text-[rgb(var(--icon-secundary))]
-        pl-4 
+        pl-8
+        pt-6 
+        pb-1
         rounded-[5px]
         w-full 
         outline-0 

@@ -107,18 +107,15 @@ body {
   font-family: var(--font-roboto);
 }
 
-
-
 /* Aplica a todos os estados do autofill */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset; /* fundo */
-  -webkit-text-fill-color: #000;                   /* cor do texto */
-  font-size: 0.9rem;                                  /* tamanho da fonte */
-  font-family: inherit;    
-  font-weight: normal;                         /* mantém a mesma fonte */
+  -webkit-box-shadow: 0 0 0px 1000px rgb(var(--input-bg)) inset; 
+  -webkit-text-fill-color: #858585;  
+  font-size: 0.9rem;     
+  font-weight: normal;  
 }
 
 /* CENTRALIZAR TODOS OS TOASTS NO MEIO DA TELA */
