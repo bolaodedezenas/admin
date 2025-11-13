@@ -142,11 +142,11 @@ export async function sendPasswordReset(email) {
     console.log(code);
     // Defina actionCodeSettings com a URL da sua página
     const actionCodeSettings = {
-      url: `http://localhost:3000/recovery?${code}`,
+      url: 'https://www.bolaodedezenas.com.br/recovery?${code}',
       handleCodeInApp: true,
     };
-    // 'http://localhost:3000/recovery'
-    // 'https://www.bolaodedezenas.com.br/recovery';
+    // `http://localhost:3000/recovery?${code}`
+    // 'https://www.bolaodedezenas.com.br/recovery?${code}'';
 
     http: await sendPasswordResetEmail(auth, email, actionCodeSettings);
 
