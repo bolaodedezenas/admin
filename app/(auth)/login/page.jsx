@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 // components
@@ -15,7 +15,7 @@ export default function LoginPage() {
      if (user) {
        router.replace('/'); // usuário já logado vai para raiz
      }
-   }, [user, router]);
+   }, [user, loading, router]);
 
   if (loading) return  <Loading />;
 

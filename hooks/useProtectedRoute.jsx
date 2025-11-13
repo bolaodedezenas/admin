@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 export const useProtectedRoute = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, setLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

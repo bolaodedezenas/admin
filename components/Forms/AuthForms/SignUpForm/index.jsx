@@ -23,7 +23,7 @@ import { useAuth } from '@/context/AuthContext';
 
 
 export default function SignUpForm() {
-  const {setIsRegistering, setLoading, handleLoginWithGoogle } = useAuth();
+  const {setLoading, handleLoginWithGoogle } = useAuth();
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(true);
@@ -57,10 +57,21 @@ export default function SignUpForm() {
      }
    }
 
+   const hendleReseTFom = () => {
+     setName('');
+     setEmail('');
+     setPassword('');
+     setPasswordConfirm('');
+     setCep('');
+     setPhone('');
+     setState('');
+     setCity('');
+     setTerms(false);
+   };
+
 
   const hendleSubmit = async (e) => {
     e.preventDefault();
-    setIsRegistering(true);
     if (password !== passwordConfirm) return toast.error('Ops!, senhas diferentes verifique e tente novamente .');
 
     const formData = {
@@ -95,12 +106,10 @@ export default function SignUpForm() {
       toast.error(error.message || 'Erro ao registrar');
       return;
     }
-
-   
-    
-    toast.success('Conta criada com sucesso!', {duration: 5000});
-    setLoading(true);
-    router.replace('/login');
+    hendleReseTFom()
+    toast.success('Conta criada com sucesso!', {duration: 8000});
+    setTimeout(() => {setLoading(true); router.replace('/login')} , 2000);
+    setTimeout(() => {setLoading(false)} , 5000);
   };
 
   // Login com Google

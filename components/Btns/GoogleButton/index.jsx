@@ -18,7 +18,7 @@ export default function GoogleButton({ onClick }) {
           bg-[rgb(var(--btn-bg-secundary))] hover:bg-[rgb(var(--btn-bg-secundary-hover))] 
           transition-colors duration-500 
           cursor-pointer 
-          text-[0.9rem]
+          text-[1rem]
           font-light
           "
         >

@@ -32,19 +32,19 @@ export default function SignInForm() {
 
   const hendleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) return toast.error('Por favor, preencha todos os campos!');
-
+    if (!email || !password) return toast.error('Por favor, preencha todos os campos!', {duration: 5000});
+    setLoading(true);
     const { user, error } = await handleLoginWithEmail(email, password);
-    setLoading(false);
     if (error || !user) {
+      setTimeout(() => setLoading(false), 1000);
       if (error.code === 'auth/invalid-credential')
         return toast.error('Email ou senha incorretos.');
       if (error.code === 'auth/wrong-password')
         return toast.error('Email ou senha incorretos.');
-       toast.error('Ops!, Seu e-mail ainda não foi verificado. Verifique sua caixa de entrada.', {duration: 5000});
+       toast.error('Ops!, Seu e-mail ainda não foi verificado. Verifique sua caixa de entrada.', {duration: 8000});
       return;
     }
-
+    
     toast.success('Login realizado com sucesso!');
   };
 

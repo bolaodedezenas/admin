@@ -4,7 +4,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db} from "@/libs/firebase/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore"; // <-- importa doc/getDoc
 import { loginWithGoogle, logout, loginWithEmail } from "@/libs/firebase/authService";
-import toast from "react-hot-toast";
 
 const AuthContext = createContext();
 
@@ -12,28 +11,25 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
-  const [isRegistering, setIsRegistering] = useState(false);
-
-
 
   useEffect(() => {
     setLoading(true);
     try {
       const unsubscribeAuth = auth.onAuthStateChanged(async (firebaseUser) => {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
 
         if (!firebaseUser) {
           console.log('❌ Usuário não logado');
+          setTimeout(() => setLoading(false), 3000);
           setUser(null);
-          setLoading(false)
           return;
         }
 
         if (firebaseUser) {
           //Verifica se o e-mail foi confirmado
-          if (!firebaseUser.emailVerified && !isRegistering) {
+          if (!firebaseUser.emailVerified ) {
             console.log('❌ E-mail nao verificado');
-            setLoading(false);
+            setUser(null);
+            setTimeout(() => setLoading(false) , 3000);
             return;
           }
 
@@ -48,8 +44,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('Photo', JSON.stringify(firebaseUser.photoURL));
           }
 
-          setLoading(false)
-          setIsRegistering(false);
+          setTimeout(() => setLoading(false), 3000);
         }
         
       });
@@ -81,22 +76,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleLoginWithEmail = async (email, password) => {
-    setLoading(true);
     const { user, error } = await loginWithEmail(email, password);
     if (error) return { error };
-    setUser(user);
     return { user };
   };
 
   const handleLogout = async () => {
     setLoading(true);
     await logout();
-    setUser(null); // atualiza o state do contexto setUser(null);
   };
   
 
   return (
-    <AuthContext.Provider value={{ user, loading, userToken,setIsRegistering,  setUser, setLoading, handleLoginWithGoogle, handleLoginWithEmail,  handleLogout }}>
+    <AuthContext.Provider value={{ user, loading, userToken, setUser, setLoading, handleLoginWithGoogle, handleLoginWithEmail,  handleLogout }}>
       {children}
     </AuthContext.Provider>
   );
