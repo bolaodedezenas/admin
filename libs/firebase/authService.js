@@ -128,16 +128,27 @@ export async function saveUser(id, data) {
   }
 }
 
+
+// Gera um código aleatório
+function generateFourDigits() {
+  return Math.floor(1000 + Math.random() * 9000).toString();
+}
+
+
 // Envia e-mail de redefinição de senha
 export async function sendPasswordReset(email) {
   try {
+    const code = generateFourDigits();
+    console.log(code);
     // Defina actionCodeSettings com a URL da sua página
     const actionCodeSettings = {
-      url: 'https://www.bolaodedezenas.com.br/resetPassword', // sua página
+      url: `http://localhost:3000/recovery?${code}`,
       handleCodeInApp: true,
     };
+    // 'http://localhost:3000/recovery'
+    // 'https://www.bolaodedezenas.com.br/recovery';
 
-    await sendPasswordResetEmail(auth, email, actionCodeSettings);
+    http: await sendPasswordResetEmail(auth, email, actionCodeSettings);
 
     return { ok: true, message: 'E-mail enviado com sucesso!' };
   } catch (error) {
@@ -154,3 +165,9 @@ export  async function  handleResetPassword(oobCode, password) {
     return  {status: false, message: error.message};
   }
 };
+
+// verificaçao de email type da ation code {mode=verifyEmail}
+// https://www.bolaodedezenas.com.br/resetPassword?mode=verifyEmail&oobCode=f86EpqWxQu42bpkUMfCokm0xAfPXuS4NPTK6xGBk1RcAAAGafgKlSA&apiKey=AIzaSyCdUlILR--KjaR3npFKTJSQzRfiS36Ty2A&lang=pt-BR
+
+// verificaçao de email type da ation code {mode=resetPassword}
+//  https://www.bolaodedezenas.com.br/resetPassword?apiKey=AIzaSyCdUlILR--KjaR3npFKTJSQzRfiS36Ty2A&mode=resetPassword&oobCode=Ct6-5-HfYf70ash19Dhg1cT7md3czrpk-7LaCxIEBUcAAAGafgHcjQ&continueUrl=https://www.bolaodedezenas.com.br/resetPassword&lang=pt-BR

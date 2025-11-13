@@ -57,7 +57,7 @@ export default function SignInForm() {
   };
 
   return (
-    <FormLayout >
+    <FormLayout>
       <form
         onSubmit={(e) => hendleSubmit(e)}
         className='w-full flex flex-col items-center pt-2 pb-5'
@@ -127,7 +127,7 @@ export default function SignInForm() {
             )}
           </InputLayout>
           <p
-            onClick={() => router.push('/recovery')}
+            onClick={() => router.push('/forgotPassword')}
             className='text-[rgb(var(--text))] text-[0.9rem] w-full text-center cursor-pointer hover:underline mb-3.5 mt-3 italic font-medium'
           >
             Esqueceu a senha?

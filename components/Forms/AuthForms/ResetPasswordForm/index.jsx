@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { resetPassordSchema } from '@/schemas/authSchemas';
 // components
 import FormLayout from '@/components/Forms/FormLayout';
@@ -11,6 +10,7 @@ import SignInButton from '@/components/Btns/SignInButton';
 import Title from '@/components/Title';
 import InputLayout from '@/components/InputLayout';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
 // toast
 import toast from 'react-hot-toast';
 // context
@@ -20,30 +20,18 @@ import Icon from '@/components/Icon';
 import  {handleResetPassword }from '@/libs/firebase/authService';
 
 
-export default function ResetPasswordForm() {
-  const { setLoading } = useAuth();
-  const router = useRouter();
+export default function ResetPasswordForm({ oobCode }) {
 
+  const router = useRouter();
+  const { setLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(true);
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [oobCode, setOobCode] = useState('');
-
-
-   useEffect(() => {
-    setLoading(true);
-     const query = new URLSearchParams(window.location.search);
-     const code = query.get('oobCode');
-     if (!code) return router.replace('/not-found');
-     setOobCode(code);
-     setLoading(false);
-   }, []);
 
   const hendleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); // inicia loading
     try {
-
       if (password !== passwordConfirm) {
         toast.error('Ops!, senhas diferentes verifique e tente novamente.');
         return;
@@ -57,36 +45,34 @@ export default function ResetPasswordForm() {
         return;
       }
 
-    const {status , message} = await handleResetPassword(oobCode, password);
-    // console.log(status, message);
-     if (!status) {
-       switch (message) {
-         case 'Firebase: Error (auth/invalid-action-code).':
-           toast.error(
-             'O link é inválido, já foi usado ou expirou. Solicite um novo.'
-           );
-           break;
+      const { status, message } = await handleResetPassword(oobCode, password);
+      // console.log(status, message);
+      if (!status) {
+        switch (message) {
+          case 'Firebase: Error (auth/invalid-action-code).':
+            toast.error(
+              'O link é inválido, já foi usado ou expirou. Solicite um novo.'
+            );
+            break;
 
-         case 'auth/weak-password':
-           toast.error('Senha muito fraca.');
-           break;
+          case 'auth/weak-password':
+            toast.error('Senha muito fraca.');
+            break;
 
-         default:
-           toast.error('Erro ao redefinir a senha.');
-       }
-       return;
-     }
+          default:
+            toast.error('Erro ao redefinir a senha.');
+        }
+        return;
+      }
 
-      toast.success(message);
-      // fecha a aba após 2 segundos
+      toast.success(message, { duration: 6000 });
       setTimeout(() => {
-        window.close();
-      }, 4000);
-
+        router.replace('/login');
+        setTimeout(() => setLoading(false) , 2000);
+      }, 1000);
+   
     } catch (error) {
       toast.error(error.message);
-    } finally {
-      setLoading(false); // garante que a tela volte a responder
     }
   };
 
