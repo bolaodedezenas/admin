@@ -1,23 +1,14 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
+import FallingBalls from '@/components/FallingBalls';
+import Header from '@/components/Header';
+// components
 import Loading from "@/components/Loading";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
-import FallingBalls from "@/components/FallingBalls";
-import Header from "@/components/Header";
 
 export default function Painel() {
-  const router = useRouter();
   useProtectedRoute();
-  const { user, loading} = useAuth();
-
-   useEffect(() => {
-     if (!user) router.replace('/login'); // usuário já logado vai para raiz
-     if (user?.status === false) return router.replace('/welcome');
-  }, [user,  loading,  router]);
-
+  const {loading} = useAuth();
   if (loading) return  <Loading />;
 
   return (

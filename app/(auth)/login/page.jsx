@@ -12,11 +12,11 @@ export default function LoginPage() {
   const { user, loading } = useAuth(); // pega as funções do contexto
 
    useEffect(() => {
-    if (user) {
-      if (user?.status) router.replace('/');
-      if(user?.status === false) return router.replace('/welcome');
-    }
-  }, [user,  router]);
+     if (user) {
+       router.replace('/'); // usuário já logado vai para raiz
+     }
+   }, [user, router]);
+
   if (loading) return  <Loading />;
 
   return (

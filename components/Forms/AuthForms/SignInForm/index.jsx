@@ -35,14 +35,16 @@ export default function SignInForm() {
     if (!email || !password) return toast.error('Por favor, preencha todos os campos!');
 
     const { user, error } = await handleLoginWithEmail(email, password);
+    setLoading(false);
     if (error || !user) {
-      setLoading(false);
-      if (error.code === 'auth/invalid-credential') {
+      if (error.code === 'auth/invalid-credential')
         return toast.error('Email ou senha incorretos.');
-      }
-      return toast('Ocorreu um erro ao realizar o login. Por favor, tente novamente.');
+      if (error.code === 'auth/wrong-password')
+        return toast.error('Email ou senha incorretos.');
+       toast.error('Ops!, Seu e-mail ainda não foi verificado. Verifique sua caixa de entrada.', {duration: 5000});
+      return;
     }
-    localStorage.setItem('Photo', JSON.stringify(user.photoURL))
+
     toast.success('Login realizado com sucesso!');
   };
 

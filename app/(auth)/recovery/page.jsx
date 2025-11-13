@@ -9,12 +9,7 @@ import RecoveryForm from "@/components/Forms/AuthForms/RecoveryForm";
 
 export default function RecoveryPage() {
   const router = useRouter();
-  const { handleEmailLogin, handleLoginWithGoogle, user, loading, setLoading  } = useAuth(); // pega as funções do contexto
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [visible, setVisible] = useState(false);
+  const { user, loading,} = useAuth(); // pega as 
 
    useEffect(() => {
     if (user) {
@@ -22,29 +17,6 @@ export default function RecoveryPage() {
     }
   }, [user, router]);
 
-
-  // Login com email e senha
-  const onEmailLogin = async (e) => {
-    e.preventDefault();
-    // setError("");
-    // const { user, error } = await handleEmailLogin(email, password);
-    // if (error) return setError("Email ou senha inválidos.");
-    // alert(`Login realizado! Bem-vindo, ${user.displayName || user.email}`);
-    // router.push("/dashboard")
-  };
-
-  // Login com Google
-  const onGoogleLogin = async () => {
-    setVisible(true);
-    setError("");
-    const { user, error } = await handleLoginWithGoogle();
-    if (error) return setError("Erro ao entrar com Google."); setVisible(false);
-    // Exemplo dentro do onEmailLogin ou onGoogleLogin
-    if (user) {
-      setLoading(true);
-      router.push("/"); // redireciona para a página raiz
-    }
-  };
 
    if (loading) return  <Loading />;
 
@@ -57,7 +29,7 @@ export default function RecoveryPage() {
       sm:p-10
       "
     >
-      <RecoveryForm visible={visible} onGoogleLogin={onGoogleLogin} onEmailLogin={onEmailLogin} />
+      <RecoveryForm />
     </div>
   );
 }

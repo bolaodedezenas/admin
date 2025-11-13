@@ -12,6 +12,7 @@ export const useProtectedRoute = () => {
     if (!user) {
       router.replace("/login"); // se não estiver logado, redireciona para login
     }
+    if (user?.status === false) return router.replace('/welcome');
   }, [user, loading, router]);
 };
 

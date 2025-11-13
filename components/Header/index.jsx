@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 //components
 import Icon from "@/components/Icon";
@@ -9,18 +8,9 @@ import Icon from "@/components/Icon";
 export default function Header() {
   const perfil = JSON.parse(localStorage.getItem("Photo")) || null;
   const { user, handleLogout } = useAuth();
-  const router = useRouter();
 
   const userName = user.name?.split(" ")[0] || user.displayName?.split(" ")[0] || "usuário";
   const photoURL = user.photoURL
-  const logoutUser = async () => {
-    try {
-      await handleLogout();
-      router.push("/login");
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <header className="fixed top-0 z-50 w-full border-0  flex justify-between items-center p-6 text-white">
@@ -46,7 +36,7 @@ export default function Header() {
         </div>
       </div>
       <button
-        onClick={logoutUser}
+        onClick={() => handleLogout()}
         className="bg-white text-black text-lg px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition"
       >
         Sair

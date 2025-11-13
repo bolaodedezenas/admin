@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db} from "@/libs/firebase/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore"; // <-- importa doc/getDoc
 import { loginWithGoogle, logout, loginWithEmail } from "@/libs/firebase/authService";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext();
 
@@ -11,82 +12,49 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const [isRegistering, setIsRegistering] = useState(false);
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   // 🔥 Listener para mudanças de login e logout
-  //   const unsubscribeAuth = auth.onAuthStateChanged(async (firebaseUser) => {
-  //     if (firebaseUser) {
-  //       const docRef = doc(db, 'users', firebaseUser.uid);
-  //       const snap = await getDoc(docRef);
-  //       // Aguardar 1 segundo antes de atualizar o estado
-  //       await new Promise((resolve) => setTimeout(resolve, 3000));
-  //       // (00)00000-0000
-  //       if (snap.exists()) {
-  //         setUser({ uid: firebaseUser.uid, ...snap.data() });
-  //       } else {
-  //         setUser(firebaseUser);
-  //       }
-
-  //       localStorage.setItem('Photo', JSON.stringify(firebaseUser.photoURL));
-  //     } else {
-  //       setUser(null);
-  //     }
-  //   });
-
-  //   // 🔥 Listener para mudanças no ID Token (renovação automática do Firebase)
-  //   const unsubscribeToken = auth.onIdTokenChanged(async (user) => {
-  //     if (user) {
-  //       const newToken = await user.getIdToken();
-  //       setUserToken(newToken);
-  //     } else {
-  //       setUserToken(null);
-  //     }
-
-  //     setTimeout(() => {
-  //       setLoading(false);
-  //     }, 3000);
-  //   });
-
-  //   // ✅ remover
-  //   return () => {
-  //     unsubscribeAuth();
-  //     unsubscribeToken();
-  //   };
-  // }, []);
 
 
   useEffect(() => {
+    setLoading(true);
     try {
       const unsubscribeAuth = auth.onAuthStateChanged(async (firebaseUser) => {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
         if (!firebaseUser) {
           console.log('❌ Usuário não logado');
           setUser(null);
-          setTimeout(() => setLoading(false) , 2000);
+          setLoading(false)
           return;
         }
+
         if (firebaseUser) {
-          await new Promise((resolve) => setTimeout(resolve, 2000));
+          //Verifica se o e-mail foi confirmado
+          if (!firebaseUser.emailVerified && !isRegistering) {
+            console.log('❌ E-mail nao verificado');
+            setLoading(false);
+            return;
+          }
+
           const docRef = doc(db, 'users', firebaseUser.uid);
           const snap = await getDoc(docRef);
 
-          // console.log(snap.exists());
-          // console.log(snap.data());
-
           if (snap.exists()) {
             setUser(snap.data());
-            // setUser({ uid: firebaseUser.uid, ...snap.data() });
+            localStorage.setItem('Photo', JSON.stringify(snap.data().photoURL));
           } else {
             setUser(firebaseUser);
+            localStorage.setItem('Photo', JSON.stringify(firebaseUser.photoURL));
           }
 
-          localStorage.setItem('Photo', JSON.stringify(firebaseUser.photoURL));
-          setTimeout(() => setLoading(false) , 1000);
-        } else {
-          setUser(null);
+          setLoading(false)
+          setIsRegistering(false);
         }
+        
       });
 
+      // verifica se o token mudou para atualizar o state do contexto 
       const unsubscribeToken = auth.onIdTokenChanged(async (user) => {
         if (user) {
           const newToken = await user.getIdToken();
@@ -115,8 +83,8 @@ export const AuthProvider = ({ children }) => {
   const handleLoginWithEmail = async (email, password) => {
     setLoading(true);
     const { user, error } = await loginWithEmail(email, password);
-    setUser(user);
     if (error) return { error };
+    setUser(user);
     return { user };
   };
 
@@ -128,7 +96,7 @@ export const AuthProvider = ({ children }) => {
   
 
   return (
-    <AuthContext.Provider value={{ user, loading, userToken, setUser, setLoading, handleLoginWithGoogle, handleLoginWithEmail,  handleLogout }}>
+    <AuthContext.Provider value={{ user, loading, userToken,setIsRegistering,  setUser, setLoading, handleLoginWithGoogle, handleLoginWithEmail,  handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

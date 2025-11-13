@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   confirmPasswordReset,
+  sendEmailVerification,
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 
@@ -57,11 +58,21 @@ export async function userExists(id) {
 export const loginWithEmail = async (email, password) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
-    return { user: result.user };
+    const user = result.user;
+
+    if (!user.emailVerified) {
+      await signOut(auth);
+      return {
+        error: new Error("Seu e-mail ainda não foi verificado. Verifique sua caixa de entrada."),
+      };
+    }
+
+    return { user };
   } catch (error) {
     return { error };
   }
 };
+
 
 // desloga o usuário
 export const logout = async () => {
@@ -76,12 +87,18 @@ export const registerWithEmail = async (email, password, formData) => {
   try {
     // remove password
     const { password: _, ...Data } = formData;
-
+    
     const result = await createUserWithEmailAndPassword(auth, email, password);
+    await signOut(auth);
+
     const user = result.user;
     if (!user?.uid) {
       return { error: new Error('Não foi possível criar o usuário.') };
     }
+
+    // Envia e-mail de verificação
+    await sendEmailVerification(user);
+
     // salva os dados no banco
     const saved = await saveUser(user.uid, Data);
     return { user: saved.user };

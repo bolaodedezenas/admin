@@ -1,24 +1,16 @@
 "use client";
 
-import { useRouter } from "next/navigation";  
 // components
 import Loading from "@/components/Loading";
 // context
 import { useAuth } from "@/context/AuthContext";
+// hooks
+import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 export default function Welcome() {
-  const router = useRouter();
   const { handleLogout, loading  } = useAuth();
 
-  const logoutUser = async () => {
-    try {
-      await handleLogout();
-      router.push('/login');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+  useProtectedRoute();
   if (loading) return  <Loading />;
 
   return (
@@ -44,8 +36,8 @@ export default function Welcome() {
           para liberar seu acesso ao painel.
         </p>
         <button
-          onClick={logoutUser}
-          className='bg-gray-100 text-black text-lg px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition cursor-pointer transition-colors duration-300  ease-in-out shadow-xl' 
+          onClick={() => handleLogout()}
+          className='bg-gray-100 text-black text-lg px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition cursor-pointer transition-colors duration-300  ease-in-out shadow-xl'
         >
           Sair
         </button>

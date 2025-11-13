@@ -23,7 +23,7 @@ import { useAuth } from '@/context/AuthContext';
 
 
 export default function SignUpForm() {
-  const {setUser, setLoading, handleLoginWithGoogle } = useAuth();
+  const {setIsRegistering, setLoading, handleLoginWithGoogle } = useAuth();
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(true);
@@ -40,14 +40,11 @@ export default function SignUpForm() {
    async function buscarCEP(valor) {
      try {
        const somenteNumeros = valor.replace(/\D/g, '');
-
        if (somenteNumeros.length !== 8) return;
-
        const res = await fetch(
          `https://viacep.com.br/ws/${somenteNumeros}/json/`
        );
        const data = await res.json();
-
        if (data.erro) {
          toast.error('CEP não encontrado');
          return;
@@ -61,10 +58,9 @@ export default function SignUpForm() {
    }
 
 
-
-
   const hendleSubmit = async (e) => {
     e.preventDefault();
+    setIsRegistering(true);
     if (password !== passwordConfirm) return toast.error('Ops!, senhas diferentes verifique e tente novamente .');
 
     const formData = {
@@ -88,8 +84,7 @@ export default function SignUpForm() {
       return;
     }
     //Cria usuário no Firebase
-    const { user, error } = await registerWithEmail(email, password, formData);
-    setUser(user);
+    const { error } = await registerWithEmail(email, password, formData);
     //Tratar erro DO FIREBASE
     if (error) {
       if (error.code === 'auth/email-already-in-use') {
@@ -98,11 +93,14 @@ export default function SignUpForm() {
       }
       // Para outros erros
       toast.error(error.message || 'Erro ao registrar');
-      console.log(error.message);
       return;
     }
+
+   
+    
+    toast.success('Conta criada com sucesso!', {duration: 5000});
     setLoading(true);
-    toast.success('Conta criada com sucesso!');
+    router.replace('/login');
   };
 
   // Login com Google
@@ -110,9 +108,8 @@ export default function SignUpForm() {
     setLoading(true);
     const { user, error } = await handleLoginWithGoogle();
     if (error) return setError('Erro ao entrar com Google.');
-    setLoading(true);
     if (user) {
-      router.push('/'); // redireciona para a página raiz
+      router.replace('/'); // redireciona para a página raiz
     }
   };
 
