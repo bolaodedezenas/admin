@@ -64,7 +64,7 @@ export default function SignUpForm() {
 
   const hendleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== passwordConfirm) return toast.error('Ops!, senhas diferentes verifique e tente novamente .');
+    if (password !== passwordConfirm) return toast.error('Ops!, senhas diferentes verifique e tente novamente.');
     if(!validCep){ 
       toast.error('CEP inválido, verifique e tente novamente.')
       setCity('');
