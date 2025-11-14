@@ -10,6 +10,9 @@ export default function InputUi({
   onChange,
   name,
   onBlur,
+  maxLength,
+  minLength,
+  readOnly,
   ...props
 }) {
   return (
@@ -21,8 +24,11 @@ export default function InputUi({
       onChange={onChange}
       autoComplete={autocomplete}
       onBlur={onBlur}
+      maxLength={maxLength}
+      minLength={minLength}
+      readOnly={readOnly}
       style={{ width, height }}
-      className="
+      className='
         block 
         text-[0.9rem] 
         placeholder:text-[0.9rem] 
@@ -38,7 +44,7 @@ export default function InputUi({
         outline-0 
         bg-[rgb(var(--input-bg))] 
         cursor-pointer
-      "
+      '
       {...props} // permite id, checked, disabled, etc
     />
   );

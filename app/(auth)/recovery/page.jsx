@@ -58,7 +58,7 @@ export default function Recovery() {
             text: 'Link expirado ou inválido, solicite um novo link de verificação.',
           });
         });
-      setTimeout(() => window.close(), 10000);
+      setTimeout(() => router.replace(`/login`), 10000);
     }
     setLoading(false);
   }, []);

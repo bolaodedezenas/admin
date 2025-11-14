@@ -143,7 +143,7 @@ export default function SignInForm() {
           />
         </div>
         <p className=' w-[190px]  xxs:w-full  text-[rgb(var(--text))] text-[0.9rem] text-center mt-4'>
-          Não tem uma conta?
+          Não tem uma conta?{' '}
           <span
             className='text-[rgb(var(--text-links))] cursor-pointer hover:underline '
             onClick={() => router.replace('/register')}

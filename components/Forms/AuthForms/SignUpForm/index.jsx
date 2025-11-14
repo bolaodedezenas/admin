@@ -36,6 +36,7 @@ export default function SignUpForm() {
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
   const [terms, setTerms] = useState(false);
+  const [validCep, setValidCep] = useState(false);
   
    async function buscarCEP(valor) {
      try {
@@ -47,8 +48,12 @@ export default function SignUpForm() {
        const data = await res.json();
        if (data.erro) {
          toast.error('CEP não encontrado');
+         setValidCep(false);
+         setState('');
+         setCity('');
          return;
        }
+       setValidCep(true);
        setState(data.estado);
        setCity(data.localidade);
      } catch (err) {
@@ -57,22 +62,16 @@ export default function SignUpForm() {
      }
    }
 
-   const hendleReseTFom = () => {
-     setName('');
-     setEmail('');
-     setPassword('');
-     setPasswordConfirm('');
-     setCep('');
-     setPhone('');
-     setState('');
-     setCity('');
-     setTerms(false);
-   };
-
-
   const hendleSubmit = async (e) => {
     e.preventDefault();
     if (password !== passwordConfirm) return toast.error('Ops!, senhas diferentes verifique e tente novamente .');
+    if(!validCep){ 
+      toast.error('CEP inválido, verifique e tente novamente.')
+      setCity('');
+      setState('');
+      setValidCep(false);
+      return; 
+    };
 
     const formData = {
       name,
@@ -106,10 +105,21 @@ export default function SignUpForm() {
       toast.error(error.message || 'Erro ao registrar');
       return;
     }
-    hendleReseTFom()
-    toast.success('Conta criada com sucesso!', {duration: 8000});
-    setTimeout(() => {setLoading(true); router.replace('/login')} , 2000);
-    setTimeout(() => {setLoading(false)} , 5000);
+
+      setName('');
+      setEmail('');
+      setPassword('');
+      setPasswordConfirm('');
+      setCep('');
+      setPhone('');
+      setState('');
+      setCity('');
+      setTerms(false);
+
+      setLoading(true)
+      toast.success('Conta criada com sucesso!', {duration: 8000});
+      router.replace('/login' )
+      setTimeout(() => {setLoading(false)} , 5000);
   };
 
   // Login com Google
@@ -144,7 +154,37 @@ export default function SignUpForm() {
        return `(${cleanedValue.slice(0, 2)})${cleanedValue.slice(2,7)}-${cleanedValue.slice(7, 11)}`;
      }
    }
-    
+
+   const handleCepChange = (event) => {
+     const { value } = event.target;
+     const formatted = formatCep(value);
+     setCep(formatted);
+     setCity('');
+     setState('');
+     setValidCep(false);
+   };
+
+    function formatCep(value) {
+      // Remove qualquer caractere não numérico
+      const cleaned = value.replace(/\D/g, '');
+
+      if (cleaned.length === 0) return '';
+
+      if (cleaned.length <= 2) {
+        return cleaned;
+      } else if (cleaned.length <= 5) {
+        return cleaned.slice(0, 2) + '.' + cleaned.slice(2);
+      } else {
+        return (
+          cleaned.slice(0, 2) +
+          '.' +
+          cleaned.slice(2, 5) +
+          '-' +
+          cleaned.slice(5, 8)
+        );
+      }
+    }
+
 
   return (
     <FormLayout>
@@ -234,12 +274,14 @@ export default function SignUpForm() {
             <InputUi
               id='cep'
               type='text'
-              placeholder='Digite seu CEP'
+              maxLength={12}
+              minLength={8}
+              placeholder='00.000-000'
               value={cep}
-              onChange={(e) => setCep(e.target.value)}
+              onChange={handleCepChange}
               onBlur={(e) => buscarCEP(e.target.value)}
               // busca ao sair do campo
-              autocomplete='new-cep'
+              autocomplete='postal-code'
             />
           </InputLayout>
           <InputLayout>
@@ -247,9 +289,10 @@ export default function SignUpForm() {
             <InputUi
               id='uf'
               type='text'
-              placeholder='Escolha seu estado'
+              placeholder='UF'
               value={state}
               onChange={(e) => setState(e.target.value)}
+              readOnly={validCep}
             />
           </InputLayout>
           <InputLayout>
@@ -257,9 +300,10 @@ export default function SignUpForm() {
             <InputUi
               id='city'
               type='text'
-              placeholder='Escolha sua cidade'
+              placeholder='Cidade'
               value={city}
               onChange={(e) => setCity(e.target.value)}
+              readOnly={validCep}
             />
           </InputLayout>
           <div className='flex items-center mb-4 cursor-pointer gap-3'>

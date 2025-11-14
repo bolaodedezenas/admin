@@ -60,7 +60,7 @@ export const registerSchema = z.object({
   email: emailField,
   password: passwordField,
   phone: phoneField,
-  cep: z.string().min(5, "Cep inválido"),
+  cep: z.string().regex(/^\d{2}\.\d{3}-\d{3}$/, "CEP inválido. Formato esperado: 12.345-678"),
   state: stateField,
   city: cityField,
   terms: termsField,
