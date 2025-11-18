@@ -8,12 +8,9 @@ import { IoMdNotifications, IoIosArrowForward } from 'react-icons/io';
 
 
 export default function Header() {
-  // const perfil = JSON.parse(localStorage.getItem("Photo")) || null;
   const { user, handleLogout } = useAuth();
-
   if (!user) return null;
   
-
   const userName = user.name?.split(" ")[0] || user.displayName?.split(" ")[0] || "usuário";
   const photoURL = user.photoURL
 
@@ -59,12 +56,14 @@ export default function Header() {
           <IoIosArrowForward className='bg-[rgb(var(--blue-500))] p-1 text-[2.2rem] cursor-pointer' />
         </div>
       </nav>
-      <div className='w-full flex pl-10 pr-10 pt-2 '>
-        <div className='flex items-center justify-between  min-w-[200px] bg-[#d9d9d9]  pl-3 pr-1 text-[rgb(var(--text-blue))] cursor-pointer'>
-          Opção aberta
-          <IoClose onClick={() => handleLogout()} className='text-[2rem]' />
+      <section className='w-full flex pl-10  pt-2 '>
+        <div className='w-full border-b-5 border-[#d9d9d9] pr-10'>
+          <div className='flex items-center justify-between max-w-[200px]  min-w-[200px] bg-[#d9d9d9]  pl-3 pr-1 text-[rgb(var(--text-blue))] cursor-pointer'>
+            Opção aberta
+            <IoClose onClick={() => handleLogout()} className='text-[2rem]' />
+          </div>
         </div>
-      </div>
+      </section>
     </header>
   );
 }
