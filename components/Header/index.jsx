@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import Image from "next/image";
 // icons 
 import { IoClose, IoChatboxOutline } from 'react-icons/io5';
 import { FaGear } from 'react-icons/fa6';
@@ -9,7 +8,7 @@ import { IoMdNotifications, IoIosArrowForward } from 'react-icons/io';
 
 
 export default function Header() {
-  const perfil = JSON.parse(localStorage.getItem("Photo")) || null;
+  // const perfil = JSON.parse(localStorage.getItem("Photo")) || null;
   const { user, handleLogout } = useAuth();
 
   if (!user) return null;

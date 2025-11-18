@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
-import FallingBalls from '@/components/FallingBalls';
+// import FallingBalls from '@/components/FallingBalls';
 // components
 import Loading from "@/components/Loading";
 
