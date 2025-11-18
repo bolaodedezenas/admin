@@ -68,6 +68,7 @@
   /* --- Cores de Texto --- */
   --text-title: var( --black); 
   --text: var(--black); /* Texto comum (quase preto) */
+  --text-blue: var(--blue-700); /* Texto secundário (azul escuro) */
   --text-paragraph: var( --black); /* Parágrafos (cinza-azulado claro) */
   --text-links: var(--blue-500); /* Parágrafos (cinza-azulado claro) */
 

@@ -36,7 +36,7 @@ export default function NumberBallsLoader() {
   }, []);
 
   return (
-    <div className="h-screen inset-0 flex items-center justify-center z-50 bg-gradient-to-r from-[rgb(var(--background))] to-[rgb(var(--background-secundary))]">
+    <div className="absolute h-screen inset-0 flex items-center justify-center z-100 bg-gradient-to-r from-[rgb(var(--background))] to-[rgb(var(--background-secundary))]">
       <div className="flex items-center gap-3">
         {balls.map((ball, index) => (
           <div
