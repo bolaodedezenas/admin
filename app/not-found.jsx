@@ -6,7 +6,7 @@ export default function NotFound() {
   const router = useRouter();
 
   return (
-    <main className='relative min-h-screen flex items-center justify-center overflow-hidden bg-black text-white'>
+    <main className='relative h-full flex items-center justify-center overflow-hidden bg-black text-white'>
       {/* Fundo animado */}
       <div className='absolute inset-0 animate-pulse bg-gradient-to-br from-blue-900/40 via-purple-900/40 to-black/40' />
 

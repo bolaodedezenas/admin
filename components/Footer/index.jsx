@@ -41,11 +41,11 @@ export default function Footer() {
       <section className='md:flex-1 flex  justify-between pl-8 flex-wrap'>
         <div className='flex items-center gap-4'>
           <FaBuildingShield className='text-2xl' />
-          <h4 className='whitespace-nowrap'>BOLÃO DO MINEIRO 2025</h4>
+          <h4 className='whitespace-nowrap uppercase'>Bolão de Dezenas 2025</h4>
         </div>
       </section>
       <Link
-        className='whitespace-nowrap text-center pl-10 pr-8'
+        className='whitespace-nowrap text-center pl-10 pr-8 uppercase'
         href='https://www.rixxer.com.br/'
         target='_blank'
       >
