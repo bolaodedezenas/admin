@@ -4,9 +4,12 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from 'next/navigation';
 // icons 
-import { IoClose, IoChatboxOutline } from 'react-icons/io5';
+import { IoClose, IoSearch, IoChatbox } from 'react-icons/io5';
 import { FaGear } from 'react-icons/fa6';
+import { FaSearch } from 'react-icons/fa';
 import { IoMdNotifications, IoIosArrowForward } from 'react-icons/io';
+import { AiFillCloseSquare } from 'react-icons/ai';
+
 // components
 import Dropdown from "@/components/Dropdown";
 // utils
@@ -46,89 +49,102 @@ export default function Header() {
       '
     >
       <div
-        className=' w-full flex justify-between
-        p-2 pl-10 pr-10'
+        className=' 
+        h-15 w-full flex justify-between items-center
+        pl-10 pr-10 
+        border-b border-b-gray-100 
+        
+      '
       >
-        <div className=' flex gap-6 text-[1.7rem]'>
-          <IoChatboxOutline className='cursor-pointer' />
-          <FaGear className='cursor-pointer' />
-          <IoMdNotifications className='cursor-pointer' />
+        <nav
+          className='
+          xl:h-full w-full 
+          flex  items-center justify-between  flex-wrap 
+
+        '
+        >
+          <section className='flex gap-10 mr-10'>
+            <Dropdown
+              setRecentItems={setRecentItems}
+              recentItems={recentItems}
+              title='Financeiro'
+              items={[
+                { label: 'Relatórios 01', href: '/01' },
+                { label: 'Pagamentos 02', href: '/02' },
+                { label: 'Relatórios 01', href: '/01' },
+                { label: 'Pagamentos 02', href: '/02' },
+                { label: 'Relatórios 01', href: '/01' },
+                { label: 'Pagamentos 02', href: '/02' },
+              ]}
+            />
+            <Dropdown
+              setRecentItems={setRecentItems}
+              recentItems={recentItems}
+              title='Jogos'
+              items={[
+                { label: 'Relatórios 03', href: '/03' },
+                { label: 'Pagamentos 04', href: '/04' },
+              ]}
+            />
+            <Dropdown
+              setRecentItems={setRecentItems}
+              recentItems={recentItems}
+              title='Usuários'
+              items={[
+                { label: 'Relatórios 05', href: '/05' },
+                { label: 'Pagamentos 06', href: '/06' },
+              ]}
+            />
+            <Dropdown
+              setRecentItems={setRecentItems}
+              recentItems={recentItems}
+              title='Sorteios'
+              items={[
+                { label: 'Relatórios 07', href: '/07' },
+                { label: 'Pagamentos 08', href: '/08' },
+              ]}
+            />
+            <Dropdown
+              setRecentItems={setRecentItems}
+              recentItems={recentItems}
+              title='Ganhadores'
+              items={[
+                { label: 'Relatórios 09', href: '/09' },
+                { label: 'Pagamentos 10', href: '/10' },
+              ]}
+            />
+            <Dropdown
+              setRecentItems={setRecentItems}
+              recentItems={recentItems}
+              title='Dashboards'
+              items={[
+                { label: 'Relatórios 11', href: '/11' },
+                { label: 'Pagamentos 12', href: '/12' },
+              ]}
+            />
+          </section>
+          <div className='flex pr-10'>
+            <input
+              type='text'
+              className=' bg-[rgb(var(--white))] p-1 cursor-pointer w-60 placeholder: text-gray-500 pl-5 outline-0'
+              placeholder='O que você procura?'
+            />
+            <IoSearch className='bg-[rgb(var(--blue-500))] p-2 text-[2.2rem] cursor-pointer' />
+          </div>
+        </nav>
+
+        <div className=' flex gap-5 text-[1.5rem] '>
+          <IoChatbox className='cursor-pointer hover:text-[rgb(var(--white),0.7)] transition-colors duration-500' />
+          <FaGear className='cursor-pointer hover:text-[rgb(var(--white),0.7)] transition-colors duration-500' />
+          <IoMdNotifications className='cursor-pointer hover:text-[rgb(var(--white),0.7)] transition-colors duration-500 ' />
+          <AiFillCloseSquare
+            onClick={() => handleLogout()}
+            className=' cursor-pointer hover:text-[rgb(var(--white),0.7)] transition-colors duration-500 '
+          />
         </div>
-        <h2 className=' font-medium text-[1.2rem]'>
-          Bolão de Dezenas - Versão 0.0.1
-        </h2>
-        <IoClose
-          onClick={() => handleLogout()}
-          className='text-[2rem] cursor-pointer'
-        />
       </div>
-      <nav className=' w-full flex  items-center justify-between border-y-2 p-1 flex-wrap border-gray-400  pl-10 '>
-        <section className='flex gap-10 mr-10'>
-          <Dropdown
-            setRecentItems={setRecentItems}
-            recentItems={recentItems}
-            title='Financeiro'
-            items={[
-              { label: 'Relatórios 01', href: '/01' },
-              { label: 'Pagamentos 02', href: '/02' },
-            ]}
-          />
-          <Dropdown
-            setRecentItems={setRecentItems}
-            recentItems={recentItems}
-            title='Jogos'
-            items={[
-              { label: 'Relatórios 03', href: '/03' },
-              { label: 'Pagamentos 04', href: '/04' },
-            ]}
-          />
-          <Dropdown
-            setRecentItems={setRecentItems}
-            recentItems={recentItems}
-            title='Usuários'
-            items={[
-              { label: 'Relatórios 05', href: '/05' },
-              { label: 'Pagamentos 06', href: '/06' },
-            ]}
-          />
-          <Dropdown
-            setRecentItems={setRecentItems}
-            recentItems={recentItems}
-            title='Sorteios'
-            items={[
-              { label: 'Relatórios 07', href: '/07' },
-              { label: 'Pagamentos 08', href: '/08' },
-            ]}
-          />
-          <Dropdown
-            setRecentItems={setRecentItems}
-            recentItems={recentItems}
-            title='Ganhadores'
-            items={[
-              { label: 'Relatórios 09', href: '/09' },
-              { label: 'Pagamentos 10', href: '/10' },
-            ]}
-          />
-          <Dropdown
-            setRecentItems={setRecentItems}
-            recentItems={recentItems}
-            title='Dashboards'
-            items={[
-              { label: 'Relatórios 11', href: '/11' },
-              { label: 'Pagamentos 12', href: '/12' },
-            ]}
-          />
-        </section>
-        <div className='flex pr-10'>
-          <input
-            type='text'
-            className=' bg-[rgb(var(--white))] p-1 cursor-pointer w-60 placeholder: text-gray-500 pl-5'
-            placeholder='O que você procura?'
-          />
-          <IoIosArrowForward className='bg-[rgb(var(--blue-500))] p-1 text-[2.2rem] cursor-pointer' />
-        </div>
-      </nav>
-      <section className='w-full  flex pl-10  pt-2  '>
+
+      <section className='w-full  flex pl-10  pt-2 h-12 '>
         <div className={`w-full flex items-center  gap-2 pr-10 `}>
           {items.map((item) => (
             <div
@@ -148,11 +164,11 @@ export default function Header() {
               }
               transition-colors duration-500 h-10
               min-w-[35px] max-w-[250px] hover:bg-[rgb(var(--blue-50))]
-              flex gap-0 items-center justify-center text-[rgb(var(--text-blue))] cursor-pointer
+              flex gap-3 items-center justify-center text-[rgb(var(--text-blue))] cursor-pointer
               `}
             >
               <div
-                className='truncate min-w-0 max-sm:hidden'
+                className='truncate min-w-0 max-sm:hidden text-[1rem] '
                 onClick={() => router.push(item.href)}
               >
                 {item.label}

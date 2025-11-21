@@ -20,14 +20,14 @@ export default function Dropdown({ title, items, setRecentItems, recentItems}) {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <button className=' py-2 text-[1.2rem] font-medium hover:text-gray-300 cursor-pointer'>
+      <button className=' h-15 text-[1rem] font-medium hover:text-gray-300 cursor-pointer'>
         {title}
       </button>
 
       <div
         className={`
           absolute z-50 left-0 mt-0 w-48 bg-white rounded-md shadow-lg 
-          text-[1rem] text-[rgb(var(--text-title))] 
+          text-[0.9rem] text-[rgb(var(--text-title))] 
           border-0 overflow-y-auto transition-all duration-200 
           ${
             open
@@ -43,12 +43,10 @@ export default function Dropdown({ title, items, setRecentItems, recentItems}) {
           <Link
             key={item.href}
             href={'#'}
-            onClick={() =>
-              {
-                saveRecentItem({ label: item.label, href: item.href }),
-                setRecentItems(false)
-              }
-            }
+            onClick={() => {
+              saveRecentItem({ label: item.label, href: item.href }),
+                setRecentItems(false);
+            }}
             className='block px-4 py-2 hover:bg-[rgb(var(--blue-50))]'
           >
             {item.label}
