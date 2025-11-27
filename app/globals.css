@@ -134,3 +134,23 @@ input:-webkit-autofill:active {
   z-index: 999999 !important;
   pointer-events: none !important; /* deixa clicar atrás se quiser */
 }
+
+
+::-webkit-scrollbar {
+  width: 5px;       /* largura da barra vertical */
+  height: 5px;      /* altura da barra horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* cor do fundo da barra */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #324F8E; /* cor do "polegar" */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #557EDA;
+  cursor: pointer;
+}

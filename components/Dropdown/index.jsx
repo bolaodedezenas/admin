@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { saveRecentItem } from '@/utils/saveRecentItem';
 
 
-export default function Dropdown({ title, items, setRecentItems, recentItems}) {
+export default function Dropdown({ title, items, setRecentItems}) {
   const [open, setOpen] = useState(false);
 
   const limit = 4; // até 4 itens a altura cresce
@@ -16,6 +16,7 @@ export default function Dropdown({ title, items, setRecentItems, recentItems}) {
 
   return (
     <div
+      key={title}
       className='relative inline-block text-left h-full '
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
@@ -26,7 +27,7 @@ export default function Dropdown({ title, items, setRecentItems, recentItems}) {
 
       <div
         className={`
-          absolute z-50 left-0 mt-0 w-48 bg-white rounded-md shadow-lg 
+          absolute z-50 left-0 mt-0 min-w-max bg-white rounded-md shadow-lg 
           text-[0.9rem] text-[rgb(var(--text-title))] 
           border-0 overflow-y-auto transition-all duration-200 
           ${
@@ -41,8 +42,8 @@ export default function Dropdown({ title, items, setRecentItems, recentItems}) {
       >
         {items.map((item) => (
           <Link
-            key={item.href}
-            href={'#'}
+            key={item.label}
+            href={item.href}
             onClick={() => {
               saveRecentItem({ label: item.label, href: item.href }),
                 setRecentItems(false);

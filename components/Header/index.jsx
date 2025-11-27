@@ -14,13 +14,17 @@ import { AiFillCloseSquare } from 'react-icons/ai';
 import Dropdown from "@/components/Dropdown";
 // utils
 import { getRecentItems, removeRecentItem } from '@/utils/saveRecentItem';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const router = useRouter();
   const { user, handleLogout } = useAuth();
   const [recentItems, setRecentItems] = useState(false);
   const [items, setItems] = useState([]);
-  
+
+  const pathname = usePathname(); 
+  const currentRoute = "/" + pathname.split('/')[1];
+
   useEffect(() => {
     const res = getRecentItems();
     setItems(res);
@@ -32,12 +36,39 @@ export default function Header() {
     setItems(getRecentItems()); // atualiza lista
   };
 
-   if (!user) return null;
+  if (!user) return null;
 
- 
-  
-  const userName = user.name?.split(" ")[0] || user.displayName?.split(" ")[0] || "usuário";
-  const photoURL = user.photoURL
+  const userName =
+    user.name?.split(' ')[0] || user.displayName?.split(' ')[0] || 'usuário';
+  const photoURL = user.photoURL;
+
+  // dropdownData.js (ou dentro do próprio Header, se preferir)
+  const dropdownSections = [
+    {
+      title: 'Financeiro',
+      items: [{ label: 'Resumo financeiro', href: '/finance' }],
+    },
+    {
+      title: 'Jogos',
+      items: [{ label: 'Resumo dos jogos', href: '/games' }],
+    },
+    {
+      title: 'Usuários',
+      items: [{ label: 'Resumo dos usuários', href: '/users' }],
+    },
+    {
+      title: 'Sorteios',
+      items: [{ label: 'Relatórios dos sorteios', href: '/raffles' }],
+    },
+    {
+      title: 'Ganhadores',
+      items: [{ label: 'Relatórios dos ganhadores', href: '/winners' }],
+    },
+    {
+      title: 'Dashboards',
+      items: [{ label: 'Resumo dos dashboards', href: '/dashboard' }],
+    },
+  ];
 
   return (
     <header
@@ -64,64 +95,21 @@ export default function Header() {
         '
         >
           <section className='flex gap-10 mr-10'>
-            <Dropdown
-              setRecentItems={setRecentItems}
-              recentItems={recentItems}
-              title='Financeiro'
-              items={[
-                { label: 'Relatórios 01', href: '/01' },
-                { label: 'Pagamentos 02', href: '/02' },
-                { label: 'Relatórios 01', href: '/01' },
-                { label: 'Pagamentos 02', href: '/02' },
-                { label: 'Relatórios 01', href: '/01' },
-                { label: 'Pagamentos 02', href: '/02' },
-              ]}
-            />
-            <Dropdown
-              setRecentItems={setRecentItems}
-              recentItems={recentItems}
-              title='Jogos'
-              items={[
-                { label: 'Relatórios 03', href: '/03' },
-                { label: 'Pagamentos 04', href: '/04' },
-              ]}
-            />
-            <Dropdown
-              setRecentItems={setRecentItems}
-              recentItems={recentItems}
-              title='Usuários'
-              items={[
-                { label: 'Relatórios 05', href: '/05' },
-                { label: 'Pagamentos 06', href: '/06' },
-              ]}
-            />
-            <Dropdown
-              setRecentItems={setRecentItems}
-              recentItems={recentItems}
-              title='Sorteios'
-              items={[
-                { label: 'Relatórios 07', href: '/07' },
-                { label: 'Pagamentos 08', href: '/08' },
-              ]}
-            />
-            <Dropdown
-              setRecentItems={setRecentItems}
-              recentItems={recentItems}
-              title='Ganhadores'
-              items={[
-                { label: 'Relatórios 09', href: '/09' },
-                { label: 'Pagamentos 10', href: '/10' },
-              ]}
-            />
-            <Dropdown
-              setRecentItems={setRecentItems}
-              recentItems={recentItems}
-              title='Dashboards'
-              items={[
-                { label: 'Relatórios 11', href: '/11' },
-                { label: 'Pagamentos 12', href: '/12' },
-              ]}
-            />
+            <button
+              className=' h-15 text-[1rem] font-medium hover:text-gray-300 cursor-pointer'
+              onClick={() => router.push('/home')}
+            >
+              Home
+            </button>
+            {dropdownSections.map((section, index) => (
+              <Dropdown
+                key={index}
+                setRecentItems={setRecentItems}
+                recentItems={recentItems}
+                title={section.title}
+                items={section.items}
+              />
+            ))}
           </section>
           <div className='flex pr-10'>
             <input
@@ -153,12 +141,12 @@ export default function Header() {
               border-b-6 
               pl-2 pr-2
               ${
-                item.href === '/12'
+                item.href === currentRoute //comparar com url
                   ? ' border-[rgb(var(--blue-50))]'
                   : ' border-[rgb(var(--blue-700))]'
               }
               ${
-                item.href === '/12' //comparar com url
+                item.href === currentRoute //comparar com url
                   ? ' bg-[rgb(var(--blue-50))]'
                   : ' bg-[#d9d9d9]'
               }

@@ -44,11 +44,7 @@ export default function RootLayout({ children }) {
         className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-screen w-screen flex flex-col `}
       >
         <AuthProvider>
-          <>
-            <Header/>
-            <main className="flex-1">{children}</main>
-            <Footer/>
-          </>
+          {children}
         </AuthProvider>
         <Toaster
           position='top-center'

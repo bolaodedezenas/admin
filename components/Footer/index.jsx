@@ -36,7 +36,7 @@ export default function Footer() {
         ) : (
           <FaUser className='text-2xl' />
         )}
-        <h4>{user?.name.split(' ')[0].toUpperCase()}</h4>
+        <h4>{user?.name?.split(' ')[0].toUpperCase()}</h4>
       </div>
       <section className='md:flex-1 flex  justify-between pl-8 flex-wrap'>
         <div className='flex items-center gap-4'>

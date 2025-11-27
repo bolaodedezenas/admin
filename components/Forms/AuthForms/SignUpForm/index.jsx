@@ -83,9 +83,12 @@ export default function SignUpForm() {
       city,
       terms,
       photoURL: '',
-      permissions: [],
-      status: false,
+      roles: [], // Ex: 'admin', 'user'
+      permissions: [], // Ex: { route: '/admin', actions: { canView: true, canEdit: false, canDelete: false} }
+      status: 'bloqueado', // ativo,  bloqueado
+      isAdmin: false,
     };
+    
     // Validação com Zod
     const result = await registerSchema.safeParseAsync(formData);
     if (!result.success) {

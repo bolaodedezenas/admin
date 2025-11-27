@@ -12,6 +12,8 @@ import InputLayout from "@/components/InputLayout";
 //icons
 import Icon from "@/components/Icon";
 import {sendPasswordReset} from "@/libs/firebase/authService";
+import { GoPasskeyFill } from "react-icons/go";
+
 // toast
 import toast from "react-hot-toast";
 
@@ -47,11 +49,15 @@ export default function SignInForm() {
         if (!exists){
           startCountdown(); 
           toast.error(
-            `Ops!, você ainda não possui uma conta!  redirecionando para cadastro em 3s segundos...`,
-            { duration: 5000 }
+            `Ops!, você ainda não possui uma conta!  redirecionando você para cadastro `,
+            { duration: 4000 }
           );
           setTimeout(() => {
             router.push('/register');
+            toast.success('Prontinho, Cadastre-se e tenha acesso!', {
+              duration: 3000,
+              icon: <GoPasskeyFill className=" text-[1.5rem]" />,
+            });
           }, 4000);
           return;
         }

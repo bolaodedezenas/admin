@@ -25,8 +25,10 @@ export const loginWithGoogle = async () => {
       state: '',
       city: '',
       terms: true,
-      permissions: [],
-      status: false,
+      roles: [], // Ex: 'admin', 'user'
+      permissions: [], // Ex: { route: '/admin', actions: { canView: true, canEdit: false, canDelete: false} }
+      status: 'bloqueado', // ativo,  bloqueado
+      isAdmin: false,
     };
 
     const exists = await userExists(id);

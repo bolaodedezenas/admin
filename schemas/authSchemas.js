@@ -66,7 +66,7 @@ export const registerSchema = z.object({
   terms: termsField,
   photoURL: z.string().url("URL inválida").optional().or(z.literal("")),
   permissions: z.array(z.string()).optional(),
-  status: z.boolean().default(false),
+  status: z.string()
 });
 
  // Schema de reset de senha
