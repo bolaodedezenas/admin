@@ -36,6 +36,7 @@ export default function Header() {
     const res = getRecentItems();
     setItems(res); // atualiza lista
     
+    if (res.length === 0) router.replace('/home');
     if (currentRoute === href) router.push(res[0].href); // redireciona para o primeiro item
   };
 
