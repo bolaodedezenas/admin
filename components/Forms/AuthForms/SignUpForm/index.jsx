@@ -230,6 +230,7 @@ export default function SignUpForm() {
               onChange={(e) => setName(e.target.value)}
               autocomplete='name'
               className={focusInput === 'name' ? 'border-1 border-red-600' : ''}
+              required
             />
           </InputLayout>
           <InputLayout>
@@ -243,6 +244,7 @@ export default function SignUpForm() {
                 setEmail(e.target.value), setFocusInput('');
               }}
               autocomplete='email'
+              required
               className={
                 focusInput === 'email' ? 'border-1 border-red-600' : ''
               }
@@ -259,6 +261,7 @@ export default function SignUpForm() {
                 setPassword(e.target.value), setFocusInput('');
               }}
               autocomplete='new-password'
+              required
               className={
                 focusInput === 'password' ? 'border-1 border-red-600' : ''
               }
@@ -292,6 +295,7 @@ export default function SignUpForm() {
                 setPasswordConfirm(e.target.value), setFocusInput('');
               }}
               autocomplete='new-password'
+              required
               className={
                 focusInput === 'password' ? 'border-1 border-red-600' : ''
               }
@@ -306,6 +310,7 @@ export default function SignUpForm() {
               value={phone}
               onChange={handlePhoneChange}
               autocomplete='tel'
+              required
               className={
                 focusInput === 'phone' ? 'border-1 border-red-600' : ''
               }
@@ -324,6 +329,7 @@ export default function SignUpForm() {
               // busca ao sair do campo
               onBlur={(e) => buscarCEP(e.target.value)}
               autocomplete='postal-code'
+              required
               className={focusInput === 'cep' ? 'border-1 border-red-600' : ''}
             />
           </InputLayout>
@@ -338,6 +344,7 @@ export default function SignUpForm() {
                 setState(e.target.value), setFocusInput('');
               }}
               readOnly={validCep}
+              required
               className={focusInput === 'uf' ? 'border-1 border-red-600' : ''}
             />
           </InputLayout>
@@ -355,20 +362,22 @@ export default function SignUpForm() {
               className={focusInput === 'city' ? 'border-1 border-red-600' : ''}
             />
           </InputLayout>
-          <div className={`flex items-center 
+          <div
+            className={`flex items-center 
               mb-4 cursor-pointer gap-3
               ${
                 focusInput === 'terms'
                   ? 'underline text-red-500 font-bold '
-                  : '' 
+                  : ''
               }
-              `
-            }>
+              `}
+          >
             <InputUi
               type='checkbox'
               width='20px'
               height='20px'
               checked={terms}
+              required
               onChange={(e) => {
                 setTerms(e.target.checked), setFocusInput('');
               }}
