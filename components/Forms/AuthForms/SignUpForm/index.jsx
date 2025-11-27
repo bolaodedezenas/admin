@@ -324,7 +324,6 @@ export default function SignUpForm() {
               // busca ao sair do campo
               onBlur={(e) => buscarCEP(e.target.value)}
               autocomplete='postal-code'
-              required
               className={focusInput === 'cep' ? 'border-1 border-red-600' : ''}
             />
           </InputLayout>

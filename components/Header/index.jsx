@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation';
 // icons 
 import { IoClose, IoSearch, IoChatbox } from 'react-icons/io5';
 import { FaGear } from 'react-icons/fa6';
-import { FaSearch } from 'react-icons/fa';
-import { IoMdNotifications, IoIosArrowForward } from 'react-icons/io';
+import { IoMdNotifications} from 'react-icons/io';
 import { AiFillCloseSquare } from 'react-icons/ai';
 
 // components
@@ -35,8 +34,8 @@ export default function Header() {
     removeRecentItem(href);
     const res = getRecentItems();
     setItems(res); // atualiza lista
-    
-    if (res.length === 0) router.replace('/home');
+
+    if (res.length === 0) return router.replace('/home');
     if (currentRoute === href) router.push(res[0].href); // redireciona para o primeiro item
   };
 
@@ -168,9 +167,9 @@ export default function Header() {
               </div>
               <div>
                 <IoClose
-                  onClick={() => {
+                  onClick={(e) => {
                     deleteItem(item, item.href);
-                    stopPropagation();
+                    e.stopPropagation();
                   }}
                   className='text-[1.5rem]'
                 />
