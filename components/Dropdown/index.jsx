@@ -46,7 +46,7 @@ export default function Dropdown({ title, items, setRecentItems}) {
             href={item.href}
             onClick={() => {
               saveRecentItem({ label: item.label, href: item.href }),
-                setRecentItems(false);
+              setRecentItems(false);
             }}
             className='block px-4 py-2 hover:bg-[rgb(var(--blue-50))]'
           >

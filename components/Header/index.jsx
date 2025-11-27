@@ -31,9 +31,12 @@ export default function Header() {
     setRecentItems(true);
   }, [recentItems]);
 
-  const deleteItem = (href) => {
+  const deleteItem = (item, href) => {
     removeRecentItem(href);
-    setItems(getRecentItems()); // atualiza lista
+    const res = getRecentItems();
+    setItems(res); // atualiza lista
+    
+    if (currentRoute === href) router.push(res[0].href); // redireciona para o primeiro item
   };
 
   if (!user) return null;
@@ -150,7 +153,8 @@ export default function Header() {
                   ? ' bg-[rgb(var(--blue-50))]'
                   : ' bg-[#d9d9d9]'
               }
-              transition-colors duration-500 h-10
+              transition duration-500 h-10
+              
               min-w-[35px] max-w-[250px] hover:bg-[rgb(var(--blue-50))]
               flex gap-3 items-center justify-center text-[rgb(var(--text-blue))] cursor-pointer
               `}
@@ -164,7 +168,7 @@ export default function Header() {
               <div>
                 <IoClose
                   onClick={() => {
-                    deleteItem(item.href);
+                    deleteItem(item, item.href);
                     stopPropagation();
                   }}
                   className='text-[1.5rem]'
