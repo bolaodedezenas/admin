@@ -13,6 +13,7 @@ export default function InputUi({
   maxLength,
   minLength,
   readOnly,
+  className,
   ...props
 }) {
   return (
@@ -28,7 +29,7 @@ export default function InputUi({
       minLength={minLength}
       readOnly={readOnly}
       style={{ width, height }}
-      className='
+      className={`
         block 
         text-[0.9rem] 
         placeholder:text-[0.9rem] 
@@ -44,7 +45,8 @@ export default function InputUi({
         outline-0 
         bg-[rgb(var(--input-bg))] 
         cursor-pointer
-      '
+        ${className ? className : 'border-1 border-transparent'}
+      `}
       {...props} // permite id, checked, disabled, etc
     />
   );

@@ -1,15 +1,6 @@
-"use client";
-
-import { useAuth } from "@/context/AuthContext";
-import { useProtectedRoute } from "@/hooks/useProtectedRoute";
-// import FallingBalls from '@/components/FallingBalls';
-// components
-import Loading from "@/components/Loading";
 
 export default function Home() {
-  useProtectedRoute();
-  const {loading} = useAuth();
-  if (loading) return  <Loading />;
+
 
   return (
     <section className='h-full flex flex-col items-center justify-center bg-[rgb(var(--blue-50))] p-4'>

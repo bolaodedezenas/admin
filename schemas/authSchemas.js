@@ -11,7 +11,9 @@ export const nameField = z
 // E-mail
 export const emailField = z
   .string()
-  .email("E-mail inválido");
+  .min(1, 'E-mail precisa ser preenchido')
+  .email('E-mail inválido');
+
 
 // Senha forte
 export const passwordField = z

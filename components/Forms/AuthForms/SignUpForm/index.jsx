@@ -37,36 +37,51 @@ export default function SignUpForm() {
   const [city, setCity] = useState('');
   const [terms, setTerms] = useState(false);
   const [validCep, setValidCep] = useState(false);
+
+  const [focusInput, setFocusInput] = useState('');
   
    async function buscarCEP(valor) {
      try {
        const somenteNumeros = valor.replace(/\D/g, '');
-       if (somenteNumeros.length !== 8) return;
+       if (somenteNumeros.length !== 8) {
+          setFocusInput('cep');
+          toast.error('CEP inválido, Ex: 12.345-678.');
+          return;
+       }
        const res = await fetch(
          `https://viacep.com.br/ws/${somenteNumeros}/json/`
        );
        const data = await res.json();
        if (data.erro) {
          toast.error('CEP não encontrado');
+         setFocusInput('cep');
          setValidCep(false);
          setState('');
          setCity('');
          return;
        }
+       toast.success('CEP encontrado com sucesso!');
        setValidCep(true);
        setState(data.estado);
        setCity(data.localidade);
      } catch (err) {
        console.error('Erro ao buscar CEP:', err);
+       setFocusInput('cep');
        toast.error('Erro ao buscar CEP, verifique e tente novamente.');
      }
    }
 
   const hendleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== passwordConfirm) return toast.error('Ops!, senhas diferentes verifique e tente novamente.');
+    if (password !== passwordConfirm){
+      toast.error('Ops!, senhas diferentes verifique e tente novamente.');
+      setFocusInput('password');
+      return; 
+    } 
+
     if(!validCep){ 
       toast.error('CEP inválido, verifique e tente novamente.')
+      setFocusInput('cep');
       setCity('');
       setState('');
       setValidCep(false);
@@ -93,6 +108,8 @@ export default function SignUpForm() {
     const result = await registerSchema.safeParseAsync(formData);
     if (!result.success) {
       const Error = result.error.issues[0].message;
+      console.log(result.error.issues[0].path);
+      setFocusInput(result.error.issues[0].path[0]);
       toast.error(Error);
       return;
     }
@@ -136,6 +153,7 @@ export default function SignUpForm() {
   };
 
    const handlePhoneChange = (event) => {
+    setFocusInput('');
      const { value } = event.target;
      const formattedPhone = formatPhoneNumber(value);
      setPhone(formattedPhone);
@@ -159,6 +177,7 @@ export default function SignUpForm() {
    }
 
    const handleCepChange = (event) => {
+     setFocusInput('');
      const { value } = event.target;
      const formatted = formatCep(value);
      setCep(formatted);
@@ -187,6 +206,7 @@ export default function SignUpForm() {
         );
       }
     }
+    
 
 
   return (
@@ -209,6 +229,7 @@ export default function SignUpForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               autocomplete='name'
+              className={focusInput === 'name' ? 'border-1 border-red-600' : ''}
             />
           </InputLayout>
           <InputLayout>
@@ -218,8 +239,13 @@ export default function SignUpForm() {
               type='email'
               placeholder='Email@example.com'
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value), setFocusInput('');
+              }}
               autocomplete='email'
+              className={
+                focusInput === 'email' ? 'border-1 border-red-600' : ''
+              }
             />
           </InputLayout>
           <InputLayout>
@@ -229,8 +255,13 @@ export default function SignUpForm() {
               type={showPassword ? 'password' : 'text'}
               placeholder='Digite sua senha'
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value), setFocusInput('');
+              }}
               autocomplete='new-password'
+              className={
+                focusInput === 'password' ? 'border-1 border-red-600' : ''
+              }
             />
             {showPassword ? (
               <FiEyeOff
@@ -257,19 +288,27 @@ export default function SignUpForm() {
               type={showPassword ? 'password' : 'text'}
               placeholder='Repita a sua senha'
               value={passwordConfirm}
-              onChange={(e) => setPasswordConfirm(e.target.value)}
+              onChange={(e) => {
+                setPasswordConfirm(e.target.value), setFocusInput('');
+              }}
               autocomplete='new-password'
+              className={
+                focusInput === 'password' ? 'border-1 border-red-600' : ''
+              }
             />
           </InputLayout>
           <InputLayout>
-            <Label id='tel'>Telefone</Label>
+            <Label id='phone'>Telefone</Label>
             <InputUi
-              id='tel'
+              id='phone'
               type='text'
               placeholder='(99) 99999-9999'
               value={phone}
               onChange={handlePhoneChange}
               autocomplete='tel'
+              className={
+                focusInput === 'phone' ? 'border-1 border-red-600' : ''
+              }
             />
           </InputLayout>
           <InputLayout>
@@ -282,9 +321,11 @@ export default function SignUpForm() {
               placeholder='00.000-000'
               value={cep}
               onChange={handleCepChange}
-              onBlur={(e) => buscarCEP(e.target.value)}
               // busca ao sair do campo
+              onBlur={(e) => buscarCEP(e.target.value)}
               autocomplete='postal-code'
+              required
+              className={focusInput === 'cep' ? 'border-1 border-red-600' : ''}
             />
           </InputLayout>
           <InputLayout>
@@ -294,8 +335,11 @@ export default function SignUpForm() {
               type='text'
               placeholder='UF'
               value={state}
-              onChange={(e) => setState(e.target.value)}
+              onChange={(e) => {
+                setState(e.target.value), setFocusInput('');
+              }}
               readOnly={validCep}
+              className={focusInput === 'uf' ? 'border-1 border-red-600' : ''}
             />
           </InputLayout>
           <InputLayout>
@@ -305,17 +349,30 @@ export default function SignUpForm() {
               type='text'
               placeholder='Cidade'
               value={city}
-              onChange={(e) => setCity(e.target.value)}
+              onChange={(e) => {
+                setCity(e.target.value), setFocusInput('');
+              }}
               readOnly={validCep}
+              className={focusInput === 'city' ? 'border-1 border-red-600' : ''}
             />
           </InputLayout>
-          <div className='flex items-center mb-4 cursor-pointer gap-3'>
+          <div className={`flex items-center 
+              mb-4 cursor-pointer gap-3
+              ${
+                focusInput === 'terms'
+                  ? 'underline text-red-500 font-bold '
+                  : '' 
+              }
+              `
+            }>
             <InputUi
               type='checkbox'
               width='20px'
               height='20px'
               checked={terms}
-              onChange={(e) => setTerms(e.target.checked)}
+              onChange={(e) => {
+                setTerms(e.target.checked), setFocusInput('');
+              }}
             />
             <p className='max-w-[90%] text-[rgb(var(--text))] text-[0.9rem] font-medium'>
               Declaro ter 18+
