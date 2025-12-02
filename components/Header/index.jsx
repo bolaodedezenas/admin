@@ -141,8 +141,7 @@ export default function Header() {
             <div
               key={item.href}
               className={`
-              border-b-6 
-              pl-2 pr-2
+              border-b-6  pl-2 
               ${
                 item.href === currentRoute //comparar com url
                   ? ' border-[rgb(var(--blue-50))]'

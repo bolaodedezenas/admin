@@ -43,7 +43,7 @@ export default function Recovery() {
     if (!code) return router.replace('/not-found');
 
     // Se for verificação de email
-    if (modeType === 'verifyEmail') {
+    if (modeType === 'verifyEmail' || modeType === 'verifyAndChangeEmail') {
       applyActionCode(auth, code)
         .then(() => {
           setMessage({

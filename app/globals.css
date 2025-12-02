@@ -131,7 +131,7 @@ input:-webkit-autofill:active {
   flex-direction: column !important;
   align-items: center !important;
 
-  z-index: 999999 !important;
+  z-index: 99999 !important;
   pointer-events: none !important; /* deixa clicar atrás se quiser */
 }
 

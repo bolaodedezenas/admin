@@ -4,6 +4,8 @@ import Link from 'next/link';
 // icons
 import { FaBuildingShield } from 'react-icons/fa6';
 import { FaUser } from 'react-icons/fa6';
+import { MdEditSquare } from 'react-icons/md';
+
 // context
 import { useAuth } from '@/context/AuthContext';
 
@@ -37,6 +39,7 @@ export default function Footer() {
           <FaUser className='text-2xl' />
         )}
         <h4>{user?.name?.split(' ')[0].toUpperCase()}</h4>
+        <MdEditSquare className='text-2xl' />
       </div>
       <section className='md:flex-1 flex  justify-between pl-8 flex-wrap'>
         <div className='flex items-center gap-4'>
